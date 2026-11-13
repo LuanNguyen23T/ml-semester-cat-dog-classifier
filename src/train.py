@@ -268,51 +268,6 @@ def evaluate(model, dataloader, criterion, device):
     return epoch_loss, epoch_acc, np.array(all_preds), np.array(all_targets)
 
 
-@torch.no_grad()
-def evaluate_tta(model, dataloader, criterion, device):
-    """
-    Evaluates model with Test-Time Augmentation (TTA).
-    Combines predictions from original and horizontally flipped views.
-    """
-    model.eval()
-    running_loss = 0.0
-    correct = 0
-    total = 0
-    all_preds = []
-    all_targets = []
-
-    for batch in dataloader:
-        if len(batch) >= 3 and torch.is_tensor(batch[1]) and batch[1].dtype == torch.long and batch[1].dim() == 2:
-            inputs = batch[0].to(device)
-            targets = batch[2].to(device)
-        else:
-            inputs, targets, _ = batch
-            inputs = inputs.to(device)
-            targets = targets.to(device)
-
-        # View 1: Original
-        out_orig = model(inputs)
-        # View 2: Horizontal Flip
-        out_flip = model(torch.flip(inputs, dims=[-1]))
-
-        # Ensemble softmax probabilities
-        probs = (F.softmax(out_orig, dim=1) + F.softmax(out_flip, dim=1)) / 2.0
-        log_probs = torch.log(probs.clamp(min=1e-7))
-        loss = criterion(log_probs, targets)
-
-        running_loss += loss.item() * inputs.size(0)
-        preds = probs.max(1)[1]
-        correct += preds.eq(targets).sum().item()
-        total += targets.size(0)
-
-        all_preds.extend(preds.cpu().numpy().tolist())
-        all_targets.extend(targets.cpu().numpy().tolist())
-
-    epoch_loss = running_loss / total
-    epoch_acc = (correct / total) * 100.0
-    return epoch_loss, epoch_acc, np.array(all_preds), np.array(all_targets)
-
-
 def train_model(model, train_loader, test_loader, args, device):
     """
     Trains model for `args.epochs` epochs.

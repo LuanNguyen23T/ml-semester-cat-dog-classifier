@@ -66,14 +66,10 @@ ml-semester-cat-dog-classifier/
     │   ├── 10_efficientnet.ipynb
     │   ├── checkpoints/
     │   └── plots/
-    ├── 11_clip/
-    │   ├── 11_clip.ipynb
-    │   ├── checkpoints/
-    │   └── plots/
-    └── 12_hybrid_model/
-        ├── 12_hybrid_model.ipynb        <-- Proposed PetNet-Hybrid: Dual-Attention MBConv-Dense Net
-        ├── checkpoints/                 <-- hybrid_petnet_best.pth
-        └── plots/                       <-- hybrid_petnet_curves.png, confusion_matrix, metrics.json
+    └── 11_clip/
+        ├── 11_clip.ipynb
+        ├── checkpoints/
+        └── plots/
 ```
 
 ---
@@ -126,9 +122,6 @@ Tất cả 10 notebook đều được thiết kế ngắn gọn, chuẩn 6 bư�
 
 ### 2. Sử dụng dòng lệnh (CLI)
 ```bash
-# Huấn luyện Kiến trúc Đề xuất PetNet-Hybrid (From Scratch)
-python3 src/train.py --model hybrid_petnet --task breed --epochs 50 --batch_size 64
-
 # Huấn luyện ResNet-50
 python3 src/train.py --model resnet50 --task breed --epochs 50 --batch_size 64
 
@@ -141,22 +134,3 @@ python3 src/train.py --model efficientnet --task breed --epochs 50 --batch_size 
 # Huấn luyện Custom CNN
 python3 src/train.py --model custom_cnn --task breed --epochs 50 --batch_size 64
 ```
-
----
-
-## 📊 Bảng Đối Sánh Thực Nghiệm 11 Baseline Models & Kiến Trúc Đề Xuất (50 Epochs From Scratch)
-
-| Hạng | Mô hình | Số tham số | Train Loss | Train Acc | Test Loss | Test Acc | Best Test Acc |
-|:---:|:---|:---:|:---:|:---:|:---:|:---:|:---:|
-| 🥇 | **EfficientNet-B0** | 4.05M | 2.212 | 47.64% | 2.212 | 45.98% | **46.33%** |
-| 🥈 | **SEResNet-18 (SENet)** | 11.28M | 2.197 | 47.50% | 2.318 | 41.65% | **42.44%** |
-| 🥉 | **Custom ResNet-50** | 23.58M | 2.309 | 43.59% | 2.406 | 40.77% | **40.96%** |
-| 4 | **DenseNet-121** | 6.99M | 2.269 | 46.74% | 2.364 | 39.82% | **40.31%** |
-| 5 | **Custom ResNet-34** | 21.30M | 2.508 | 36.63% | 2.415 | 39.22% | **39.22%** |
-| 6 | **Custom ResNet-18** | 11.20M | 2.428 | 39.51% | 2.436 | 38.57% | **38.57%** |
-| 7 | **MobileNetV2** | 2.27M | 2.622 | 33.53% | 2.557 | 33.63% | **34.26%** |
-| 8 | **AlexNet (BatchNorm)** | 23.48M | 2.950 | 22.26% | 2.753 | 28.18% | **28.18%** |
-| 9 | **CLIP (ViT + Text)** | 9.89M | 3.514 | - | 3.046 | - | **15.26%** |
-| 10 | **Custom CNN (6-Layer)** | 0.43M | 3.190 | 15.43% | 3.178 | 14.85% | **15.04%** |
-| 11 | **VGG-11 (BatchNorm)** | 128.92M | 3.611 | 2.69% | 3.611 | 2.73% | **2.73%** |
-| 🚀 | **PetNet-Hybrid (Đề xuất)** | **5.37M** | *Tối ưu* | *Tối ưu* | *Tối ưu* | *Tối ưu* | **Dự kiến 55% - 63%+ (với TTA)** |
