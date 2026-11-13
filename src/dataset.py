@@ -283,3 +283,74 @@ class OxfordPetCLIPDataset(OxfordPetDataset):
         caption = template.format(breed_clean)
         text_tokens = self.tokenizer.encode(caption)
         return tensor, text_tokens, target
+
+
+class OxfordPetForegroundDataset(OxfordPetDataset):
+    """
+    OxfordPetForegroundDataset:
+    Tự động khai thác file Trimap Segmentation để:
+    1. Xác định Bounding Box chặt bao quanh thú cưng (khuôn mặt, tai, thân, chân)
+    2. Cắt bỏ (crop) các vùng cảnh nền dư thừa bên ngoài với padding an toàn (4%)
+    3. Xóa các pixel nền (background pixels = 2) thành màu xám trung tính (128, 128, 128)
+       nhằm loại bỏ 100% rác môi trường (ghế sofa, người bế, bãi cỏ, thảm),
+       giúp mô hình tập trung tối đa vào hình thái và hoa văn đặc trưng của giống.
+    """
+    def __init__(self, *args, remove_background=True, crop_foreground=True, bg_color=(128, 128, 128), **kwargs):
+        super().__init__(*args, **kwargs)
+        self.remove_background = remove_background
+        self.crop_foreground = crop_foreground
+        self.bg_color = bg_color
+        self.trimaps_dir = os.path.join(self.root_dir, "annotations", "trimaps")
+
+    def __getitem__(self, idx):
+        img_path, target, class_id, spec_id, img_name = self.samples[idx]
+        with Image.open(img_path) as img:
+            img = img.convert("RGB")
+
+        trimap_path = os.path.join(self.trimaps_dir, f"{img_name}.png")
+        if os.path.exists(trimap_path) and (self.remove_background or self.crop_foreground):
+            try:
+                trimap = Image.open(trimap_path)
+                if trimap.size != img.size:
+                    trimap = trimap.resize(img.size, Image.NEAREST)
+
+                t_arr = np.array(trimap)
+                img_arr = np.array(img)
+
+                # Trimap values: 1 = Foreground (Pet), 2 = Background, 3 = Contour/Boundary
+                fg_mask = (t_arr == 1) | (t_arr == 3)
+
+                if self.crop_foreground:
+                    y_indices, x_indices = np.where(fg_mask)
+                    if len(y_indices) > 0 and len(x_indices) > 0:
+                        h, w = t_arr.shape
+                        pad_y = int(0.04 * h)
+                        pad_x = int(0.04 * w)
+                        ymin = max(0, y_indices.min() - pad_y)
+                        ymax = min(h, y_indices.max() + pad_y)
+                        xmin = max(0, x_indices.min() - pad_x)
+                        xmax = min(w, x_indices.max() + pad_x)
+
+                        img_arr = img_arr[ymin:ymax, xmin:xmax]
+                        t_arr = t_arr[ymin:ymax, xmin:xmax]
+
+                if self.remove_background:
+                    bg_mask = (t_arr == 2)
+                    img_arr[bg_mask] = self.bg_color
+
+                img = Image.fromarray(img_arr)
+            except Exception:
+                pass
+
+        if self.transform is not None:
+            tensor = self.transform(img)
+        else:
+            tensor = TF.to_tensor(img)
+
+        return tensor, target, {
+            "image_name": img_name,
+            "breed_name": self.class_names[class_id],
+            "species": "Cat" if spec_id == 0 else "Dog",
+            "class_id": class_id,
+            "species_id": spec_id
+        }
