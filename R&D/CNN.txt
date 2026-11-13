@@ -1,0 +1,45 @@
+-Mnist: lenet
+
+1. https://github.com/parulc7/LeNet-for-MNIST
+2. https://github.com/Lornatang/TensorFlow-MNIST/tree/master/v0_2
+3. https://www.datasciencecentral.com/lenet-5-a-classic-cnn-architecture/
+
+- Cifar10:
+
+1.https://github.com/exelban/tensorflow-cifar-10
+2.https://github.com/deep-diver/CIFAR10-img-classification-tensorflow
+3.https://github.com/deep-diver/CIFAR10-img-classification-tensorflow/blob/master/CIFAR10_image_classification.ipynb
+4.https://gist.github.com/josefelixsandoval/fad43016c9bca96ea529a2ff4340eba3
+5.https://github.com/shoji9x9/CIFAR-10-By-small-ResNet
+-->argparse
+- https://github.com/Jiankai-Sun/Distributed-TensorFlow-Example/blob/master/CIFAR-10/cifar10_main.py 
+
+Alexnet, Densenet
+
+-https://github.com/taki0112/SENet-Tensorflow/blob/master/cifar10.py
+-https://github.com/sumeyye-agac/object-classification-CIFAR10-tensorflow/blob/main/main.py
+-https://github.com/christiankaiser/cnn-cifar10-example/blob/master/cnn-example-image-classification.ipynb
+-https://github.com/Ermlab/cifar-keras-tutorial/blob/master/6layerCNN.py
+-->argparse
+- https://github.com/Jiankai-Sun/Distributed-TensorFlow-Example/blob/master/CIFAR-10/cifar10_main.py      
+-->data augmentation
+- https://github.com/amir-saniyan/AlexNet  -->AlexNet
+- https://github.com/AbhishekTaur/AlexNet-CIFAR-10
+- https://github.com/Prajwal10031999/Classifying-CIFAR-10-Images-with-DenseNet-121/blob/main/classifying-cifar-10-images-with-densenet.ipynb -->densenet
+- https://github.com/Raman-Raje/DenseNet-of-CIFAR-10 
+- https://gist.github.com/koshian2/f1ecf57390d5efe24f6d67f3e596b43b
+- https://gist.github.com/giuseppebonaccorso/e77e505fc7b61983f7b42dc1250f31c8
+- https://github.com/taki0112/Densenet-Tensorflow
+
+VGG, Resnet
+- https://github.com/lionelmessi6410/tensorflow2-cifar/blob/main/models/resnet.py
+- https://github.com/soapisnotfat/pytorch-cifar10/blob/master/models/DenseNet.py
+- https://github.com/PacktPublishing/Advanced-Deep-Learning-with-Keras/blob/master/chapter2-deep-networks/densenet-cifar10-2.4.1.py   (sach full)
+- https://github.com/rasbt/deeplearning-models/blob/master/pytorch_ipynb/cnn/cnn-densenet121-cifar10.ipynb
+- https://github.com/VinayBN8997/CIFAR-10-object-detection
+- https://gist.github.com/giuseppebonaccorso/e77e505fc7b61983f7b42dc1250f31c8
+- https://github.com/taki0112/Densenet-Tensorflow
+
+Mobilenet
+
+https://github.com/lionelmessi6410/tensorflow2-cifar/blob/main/models/resnet.py

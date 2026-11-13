@@ -1,0 +1,49 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE & Editor configs
+.vscode/
+.idea/
+pyrightconfig.json
+
+# Operating System files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Model checkpoints & weights (heavy binary files)
+checkpoints/
+*/checkpoints/
+**/checkpoints/
+*.pth
+*.pt
+*.ckpt
+
+# Training runs & logs
+runs/
+logs/
+wandb/
+
+# Dataset: ignore entire dataset directory and archives
+dataset/
+*.zip
+*.tar.gz
