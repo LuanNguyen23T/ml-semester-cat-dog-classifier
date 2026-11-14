@@ -35,7 +35,7 @@ Bảng dưới đây tổng hợp kết quả đối sánh giữa:
 | **07** | **MobileNetV2** | 2.27M | ~91.80% | 34.26% | *Đang cập nhật* | -57.54% | 8 |
 | **08** | **SEResNet-18 (Squeeze-Excitation)** | 11.28M | ~93.20% | 42.44% | *Đang cập nhật* | -50.76% | 2 *(Top Baseline)* |
 | **09** | **ResNet-50** | 23.58M | ~94.20% | 40.96% | *Đang cập nhật* | -53.24% | 4 |
-| **10** | **EfficientNet-B0 (Tan & Le, 2019)** | 4.05M | ~94.50% | **46.33%** | *Đang cập nhật* | -48.17% | **1 (Best Baseline)** |
+| **10** | **EfficientNet-B0 (Tan & Le, 2019)** | 4.05M | ~94.50% | **46.33%** | **62.99% (Raw Acc 50ep)** | -31.51% | **1 (Best Baseline)** |
 | **11** | **CLIP (ViT + Text Prompt From Scratch)** | 9.89M | ~88.50% *(Pretrained Zero-shot)* | 15.26% | *Đang cập nhật* | -73.24% | 10 |
 | ⭐ | **PETNET-HYBRID (Đề Xuất - Best Champion)** | **4.65M** | *N/A (Kiến trúc đề xuất mới)* | **49.09% (Raw 47.67%)** | **64.68% (Raw 63.75% + 4-View TTA)** | **Vượt xa toàn bộ 11 Baseline (+18.35%)** | 🏆 **VÔ ĐỊCH (Rank 1)** |
 
