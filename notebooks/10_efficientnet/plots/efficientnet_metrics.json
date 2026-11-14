@@ -1,0 +1,13 @@
+{
+  "model_name": "EfficientNet-B0 (Tan & Le, 2019)",
+  "total_params": 4045605,
+  "batch_size": 64,
+  "epochs_trained": 100,
+  "final_train_loss": 1.465,
+  "final_train_acc": 72.45,
+  "final_test_loss": 1.416,
+  "final_test_acc": 74.11,
+  "best_test_acc_raw": 74.19,
+  "best_test_acc_tta": 75.28,
+  "delta_tta_gain": 1.09
+}

@@ -1,0 +1,14 @@
+{
+  "model_name": "Proposed PetNet-Hybrid (Dual-Stage, Multi-Scale Fusion, Multi-Task Hierarchical)",
+  "total_params": 4612791,
+  "img_size": 288,
+  "batch_size": 48,
+  "epochs_trained": 100,
+  "final_train_loss": 1.216,
+  "final_train_acc": 74.18,
+  "final_test_loss": 1.179,
+  "final_test_acc": 75.09,
+  "best_test_acc_raw": 75.17,
+  "best_test_acc_tta": 76.15,
+  "delta_tta_gain": 0.98
+}
