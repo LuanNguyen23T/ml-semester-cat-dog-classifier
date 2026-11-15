@@ -1,0 +1,17 @@
+{
+  "model_name": "Proposed PetNet-Hybrid v2 (Dual-Attention, Multi-Scale Fusion, Multi-Task Hierarchical)",
+  "total_params": 5912971,
+  "img_size": 288,
+  "batch_size": 48,
+  "epochs_trained": 100,
+  "train_samples": 9301,
+  "test_samples": 3669,
+  "best_epoch": 90,
+  "final_train_loss": 1.374,
+  "final_train_acc": 69.58,
+  "final_test_loss": 1.116,
+  "final_test_acc": 76.94,
+  "best_benchmark_test_acc_raw": 77.57,
+  "best_benchmark_test_acc_tta": 77.95,
+  "delta_tta_gain": 0.38
+}
