@@ -11,6 +11,7 @@ import os
 import cv2
 import numpy as np
 from PIL import Image
+import xml.etree.ElementTree as ET
 import torch
 from torch.utils.data import Dataset
 import torchvision.transforms as T
@@ -354,3 +355,112 @@ class OxfordPetForegroundDataset(OxfordPetDataset):
             "class_id": class_id,
             "species_id": spec_id
         }
+
+
+class OxfordPetDualStreamDataset(OxfordPetForegroundDataset):
+    """
+    OxfordPetDualStreamDataset:
+    Sinh ra đồng thời 2 luồng ảnh chất lượng cao cho mỗi mẫu vật:
+    - Luồng 1 (Body View): Toàn bộ hình thái thú cưng (Foreground Cropped + Neutral Background)
+      giúp mạng học dáng đứng, tỷ lệ cơ thể, hoa văn toàn thân và đuôi.
+    - Luồng 2 (Head/Face Zoom View): Cận cảnh chi tiết vùng đầu/mặt (được trích xuất từ Bounding Box XML
+      hoặc phân vùng 65% trên) giúp mạng phân định sâu sắc góc tai, màu mắt, hoa văn mũi và nọng cằm.
+    """
+    def __init__(self, *args, head_transform=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.head_transform = head_transform
+        self.xmls_dir = os.path.join(self.root_dir, "annotations", "xmls")
+
+    def _extract_head(self, original_img, img_name):
+        w, h = original_img.size
+        xml_path = os.path.join(self.xmls_dir, f"{img_name}.xml")
+        if os.path.exists(xml_path):
+            try:
+                tree = ET.parse(xml_path)
+                root = tree.getroot()
+                bndbox = root.find(".//bndbox")
+                if bndbox is not None:
+                    xmin = int(float(bndbox.find("xmin").text))
+                    ymin = int(float(bndbox.find("ymin").text))
+                    xmax = int(float(bndbox.find("xmax").text))
+                    ymax = int(float(bndbox.find("ymax").text))
+                    pad_w = int((xmax - xmin) * 0.15)
+                    pad_h = int((ymax - ymin) * 0.15)
+                    xmin = max(0, xmin - pad_w)
+                    ymin = max(0, ymin - pad_h)
+                    xmax = min(w, xmax + pad_w)
+                    ymax = min(h, ymax + pad_h)
+                    if xmax > xmin and ymax > ymin:
+                        return original_img.crop((xmin, ymin, xmax, ymax))
+            except Exception:
+                pass
+        # Fallback tự động: Cắt vùng 65% phía trên và 80% trung tâm bề ngang
+        xmin = int(w * 0.10)
+        xmax = int(w * 0.90)
+        ymin = 0
+        ymax = int(h * 0.65)
+        return original_img.crop((xmin, ymin, xmax, ymax))
+
+    def __getitem__(self, idx):
+        img_path, target, class_id, spec_id, img_name = self.samples[idx]
+        with Image.open(img_path) as orig_img:
+            orig_img = orig_img.convert("RGB")
+
+        # 1. Head View (Cận cảnh mặt/tai)
+        head_img = self._extract_head(orig_img, img_name)
+
+        # 2. Body View (Toàn thân + Trimap nếu có)
+        body_img = orig_img
+        trimap_path = os.path.join(self.trimaps_dir, f"{img_name}.png")
+        if os.path.exists(trimap_path) and (self.remove_background or self.crop_foreground):
+            try:
+                trimap = Image.open(trimap_path)
+                if trimap.size != orig_img.size:
+                    trimap = trimap.resize(orig_img.size, Image.NEAREST)
+
+                t_arr = np.array(trimap)
+                img_arr = np.array(orig_img)
+                fg_mask = (t_arr == 1) | (t_arr == 3)
+
+                if self.crop_foreground:
+                    y_indices, x_indices = np.where(fg_mask)
+                    if len(y_indices) > 0 and len(x_indices) > 0:
+                        h, w = t_arr.shape
+                        pad_y = int(0.04 * h)
+                        pad_x = int(0.04 * w)
+                        ymin = max(0, y_indices.min() - pad_y)
+                        ymax = min(h, y_indices.max() + pad_y)
+                        xmin = max(0, x_indices.min() - pad_x)
+                        xmax = min(w, x_indices.max() + pad_x)
+
+                        img_arr = img_arr[ymin:ymax, xmin:xmax]
+                        t_arr = t_arr[ymin:ymax, xmin:xmax]
+
+                if self.remove_background:
+                    bg_mask = (t_arr == 2)
+                    img_arr[bg_mask] = self.bg_color
+
+                body_img = Image.fromarray(img_arr)
+            except Exception:
+                pass
+
+        # 3. Transform thành Tensors
+        if self.transform is not None:
+            body_tensor = self.transform(body_img)
+        else:
+            body_tensor = TF.to_tensor(body_img)
+
+        head_tf = self.head_transform if self.head_transform is not None else self.transform
+        if head_tf is not None:
+            head_tensor = head_tf(head_img)
+        else:
+            head_tensor = TF.to_tensor(head_img)
+
+        return (body_tensor, head_tensor), target, {
+            "image_name": img_name,
+            "breed_name": self.class_names[class_id],
+            "species": "Cat" if spec_id == 0 else "Dog",
+            "class_id": class_id,
+            "species_id": spec_id
+        }
+
