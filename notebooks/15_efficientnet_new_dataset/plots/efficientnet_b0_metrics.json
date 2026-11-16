@@ -1,0 +1,17 @@
+{
+  "model_name": "EfficientNet-B0 (Tan & Le, 2019 Table 1 - From Scratch)",
+  "total_params": 4045605,
+  "img_size": 288,
+  "batch_size": 48,
+  "epochs_trained": 100,
+  "train_samples": 9301,
+  "test_samples": 3669,
+  "best_epoch": 95,
+  "final_train_loss": 1.162,
+  "final_train_acc": 75.52,
+  "final_test_loss": 0.92,
+  "final_test_acc": 83.02,
+  "best_benchmark_test_acc_raw": 83.32,
+  "best_benchmark_test_acc_tta": 83.78,
+  "delta_tta_gain": 0.46
+}
