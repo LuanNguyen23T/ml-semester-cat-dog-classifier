@@ -1,0 +1,17 @@
+{
+  "model_name": "Dual-Stream EfficientNet-B0 (Face + Body Zoom - From Scratch)",
+  "total_params": 5084146,
+  "img_size": 288,
+  "batch_size": 32,
+  "epochs_trained": 93,
+  "train_samples": 9301,
+  "test_samples": 3669,
+  "best_epoch": 93,
+  "final_train_loss": 0.771,
+  "final_train_acc": 87.04,
+  "final_test_loss": 0.784,
+  "final_test_acc": 85.72,
+  "best_benchmark_test_acc_raw": 85.72,
+  "best_benchmark_test_acc_tta": 86.54,
+  "delta_tta_gain": 0.82
+}
