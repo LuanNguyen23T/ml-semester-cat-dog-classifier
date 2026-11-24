@@ -151,26 +151,26 @@ ml-semester-cat-dog-classifier/
 
 > **Quy chuẩn đánh giá:** Toàn bộ các mô hình bên dưới đều được kiểm định trên cùng tập **Canonical Test gồm đúng 3.669 ảnh** của tác giả gốc (*Parkhi et al., CVPR 2012*). Không rò rỉ dữ liệu test vào bất kỳ khâu huấn luyện nào.
 
-| Nhóm thực nghiệm | Phương pháp / Mô hình | Phụ trách | Kích thước | Tập huấn luyện | #Params | Top-1 Acc (Raw) | Top-1 Acc (4-View TTA) |
-| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Công bố quốc tế** | *SIFT + Spatial Pyramid* (Parkhi 2012) | CVPR 2012 | — | Oxford (3.680) | — | 59.20% | — |
-| **Tham chiếu Baseline** | Custom CNN (6 tầng) | Reference | $224 \times 224$ | Oxford (3.680) | 0.43M | 15.04% | — |
-| | AlexNet (Batch Normalization) | Reference | $224 \times 224$ | Oxford (3.680) | 23.4M | 28.18% | — |
-| | MobileNetV2 | Reference | $224 \times 224$ | Oxford (3.680) | 2.27M | 34.26% | — |
-| | VGG-11 (Batch Normalization) | Reference | $224 \times 224$ | Oxford (3.680) | 128.9M | 2.73% *(Bão hòa)* | — |
-| | ResNet-34 | Reference | $224 \times 224$ | Oxford (3.680) | 21.3M | 39.22% | — |
-| | ResNet-50 | Reference | $224 \times 224$ | Oxford (3.680) | 23.6M | 40.96% | — |
-| **Giai đoạn 1 (Baseline)** | **ResNet-18** | **AL** | $224 \times 224$ | Oxford (3.680) | 11.20M | 38.57% | — |
-| | **DenseNet-121** | **LP** | $224 \times 224$ | Oxford (3.680) | 6.99M | 40.31% | — |
-| | **SEResNet-18** *(SE Attention)* | **AL** | $224 \times 224$ | Oxford (3.680) | 11.26M | 42.44% | — |
-| | **EfficientNet-B0** | **HL** | $224 \times 224$ | Oxford (3.680) | 4.05M | **74.19%** | **75.28%** |
-| **Giai đoạn 2 (New Dataset)**| **ResNet-18 (Mở rộng)** | **LP** | $288 \times 288$ | Expanded (9.301)| 11.20M | *Đang cập nhật* | *Đang cập nhật* |
-| | **DenseNet-121 (Mở rộng)** | **LP** | $288 \times 288$ | Expanded (9.301)| 6.99M | *Đang cập nhật* | *Đang cập nhật* |
-| | **SEResNet-18 (Mở rộng)** | **AL** | $288 \times 288$ | Expanded (9.301)| 11.26M | *Đang cập nhật* | *Đang cập nhật* |
-| | **EfficientNet-B0 (Mở rộng)** | **HL** | $288 \times 288$ | Expanded (9.301)| 4.05M | **83.32%** | **83.78%** |
-| **ĐỀ XUẤT TỐI ƯU NHẤT** | **Dual-Stream Siamese PetNet** | **HL** | **$288 \times 288$** | **Expanded (9.301)** | **5.08M** | **85.72%** | **86.54%** |
-| *Tham chiếu Pretrained* | *ResNet-50 (ImageNet-1K Pretrained)* | Reference | $224 \times 224$ | Pretrained 1.28M | 23.6M | ~93.50% | — |
-| *Tham chiếu Pretrained* | *EfficientNet-B0 (ImageNet-1K Pretrained)* | Reference | $224 \times 224$ | Pretrained 1.28M | 4.05M | ~94.50% | — |
+| Nhóm thực nghiệm | Phương pháp / Mô hình | Phụ trách | Kích thước | Tập huấn luyện | #Params | Top-1 Acc (Raw) | Top-1 Acc (4-View TTA) | File Checkpoint |
+| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
+| **Công bố quốc tế** | *SIFT + Spatial Pyramid* (Parkhi 2012) | CVPR 2012 | — | Oxford (3.680) | — | 59.20% | — | — |
+| **Tham chiếu Baseline** | Custom CNN (6 tầng) | Reference | $224 \times 224$ | Oxford (3.680) | 0.43M | 15.04% | — | — |
+| | AlexNet (Batch Normalization) | Reference | $224 \times 224$ | Oxford (3.680) | 23.4M | 28.18% | — | — |
+| | MobileNetV2 | Reference | $224 \times 224$ | Oxford (3.680) | 2.27M | 34.26% | — | — |
+| | VGG-11 (Batch Normalization) | Reference | $224 \times 224$ | Oxford (3.680) | 128.9M | 2.73% *(Bão hòa)* | — | — |
+| | ResNet-34 | Reference | $224 \times 224$ | Oxford (3.680) | 21.3M | 39.22% | — | — |
+| | ResNet-50 | Reference | $224 \times 224$ | Oxford (3.680) | 23.6M | 40.96% | — | — |
+| **Giai đoạn 1 (Baseline)** | **SEResNet-18** *(SE Attention)* | **AL** | $224 \times 224$ | Oxford (3.680) | 11.28M | **68.00%** | **68.82%** | `seresnet18_foreground_best.pth` |
+| | **ResNet-18** | **AL** | $224 \times 224$ | Oxford (3.680) | 11.20M | **71.65%** | **72.50%** | `resnet18_base_best.pth` |
+| | **DenseNet-121** | **LP** | $224 \times 224$ | Oxford (3.680) | 6.99M | **72.14%** | **73.51%** | `densenet121_foreground_best.pth` |
+| | **EfficientNet-B0** | **HL** | $224 \times 224$ | Oxford (3.680) | 4.05M | **74.19%** | **75.28%** | `efficientnet_foreground_best.pth` |
+| **Giai đoạn 2 (New Dataset)**| **ResNet-18 (Mở rộng)** | **LP** | $288 \times 288$ | Expanded (9.301)| 11.20M | **67.84%** | **68.47%** | `resnet18_augmented_best.pth` |
+| | **SEResNet-18 (Mở rộng)** | **AL** | $288 \times 288$ | Expanded (9.301)| 11.28M | **70.62%** | **71.55%** | `seresnet18_augmented_best.pth` |
+| | **DenseNet-121 (Mở rộng)** | **LP** | $288 \times 288$ | Expanded (9.301)| 6.99M | **74.54%** | **75.33%** | `densenet121_augmented_best.pth` |
+| | **EfficientNet-B0 (Mở rộng)** | **HL** | $288 \times 288$ | Expanded (9.301)| 4.05M | **83.32%** | **83.78%** | `efficientnet_b0_augmented_best.pth` |
+| **ĐỀ XUẤT TỐI ƯU NHẤT** | **Dual-Stream Siamese PetNet** | **HL** | **$288 \times 288$** | **Expanded (9.301)** | **5.08M** | **85.72%** | **86.54%** | `dual_stream_efficientnet_best.pth` |
+| *Tham chiếu Pretrained* | *ResNet-50 (ImageNet-1K Pretrained)* | Reference | $224 \times 224$ | Pretrained 1.28M | 23.6M | ~93.50% | — | — |
+| *Tham chiếu Pretrained* | *EfficientNet-B0 (ImageNet-1K Pretrained)* | Reference | $224 \times 224$ | Pretrained 1.28M | 4.05M | ~94.50% | — | — |
 
 ---
 
