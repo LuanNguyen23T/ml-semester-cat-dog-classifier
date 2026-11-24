@@ -88,7 +88,7 @@ Quá trình nghiên cứu của nhóm trải qua 3 mốc thực nghiệm mang t�
 ### Bảng Đối Sánh Tổng Hợp 3 Thế Hệ Mô Hình Của Nhóm
 | Tiêu chí | Model 1: Baseline EfficientNet-B0 | Model 2: EffNet-B0 + Expanded Data | Model 3: Dual-Stream PetNet (Đề Xuất) |
 | :--- | :---: | :---: | :---: |
-| **Thư mục dự án** | [10_efficientnet](file:///Users/nguyenhuuhoangluan/Git_Code/ml-semester-cat-dog-classifier/notebooks/Hoang_Luan/old/10_efficientnet) | [15_efficientnet_new_dataset](file:///Users/nguyenhuuhoangluan/Git_Code/ml-semester-cat-dog-classifier/notebooks/Hoang_Luan/15_efficientnet_new_dataset) | [16_dual_stream_efficientnet](file:///Users/nguyenhuuhoangluan/Git_Code/ml-semester-cat-dog-classifier/notebooks/Hoang_Luan/16_dual_stream_efficientnet) |
+| **Thư mục dự án** | [Efficientnet_HL](file:///Users/nguyenhuuhoangluan/Git_Code/ml-semester-cat-dog-classifier/notebooks/Original%20Dataset/Efficientnet_HL) | [Efficientnet_HL](file:///Users/nguyenhuuhoangluan/Git_Code/ml-semester-cat-dog-classifier/notebooks/New%20Dataset%20/Efficientnet_HL) | [Dual_stream_efficientnet_HL](file:///Users/nguyenhuuhoangluan/Git_Code/ml-semester-cat-dog-classifier/notebooks/New%20Dataset%20/Dual_stream_efficientnet_HL) |
 | **Tập dữ liệu huấn luyện** | Oxford Base (3.680 ảnh) | Expanded Dataset (9.301 ảnh) | Expanded Dataset (9.301 ảnh) |
 | **Tập dữ liệu kiểm thử** | Oxford Benchmark (3.669 ảnh) | Oxford Benchmark (3.669 ảnh) | Oxford Benchmark (3.669 ảnh) |
 | **Kích thước ảnh đầu vào** | $224 \times 224$ (1 luồng) | $288 \times 288$ (1 luồng) | **$2 \times 288 \times 288$ (2 luồng: Thân + Mặt)** |
@@ -208,14 +208,17 @@ Tập dữ liệu **Oxford-IIIT Pet (3.669 ảnh kiểm thử chuẩn)** là m�
 | **Custom CNN (6 tầng)** | Baseline tối thiểu | 100% From Scratch | 0.43M | 15.04% |
 | **AlexNet (BatchNorm)** | Krizhevsky et al., 2012 | 100% From Scratch | 23.5M | 28.18% |
 | **MobileNetV2** | Sandler et al., CVPR 2018 | 100% From Scratch | 2.27M | 34.26% |
-| **ResNet-18** | He et al., CVPR 2016 | 100% From Scratch | 11.2M | 38.57% |
-| **ResNet-34** | He et al., CVPR 2016 | 100% From Scratch | 21.3M | 39.22% |
-| **DenseNet-121** | Huang et al., CVPR 2017 | 100% From Scratch | 6.99M | 40.31% |
-| **ResNet-50** | He et al., CVPR 2016 | 100% From Scratch | 23.6M | 40.96% |
-| **SEResNet-18 (SE Attention)** | Hu et al., CVPR 2018 | 100% From Scratch | 11.3M | 42.44% |
-| **EfficientNet-B0 (Baseline Nhóm)** | Tan & Le, ICML 2019 | 100% From Scratch | 4.05M | **75.28%** (TTA) |
-| **EffNet-B0 + Expanded Data (Nhóm)** | Cải tiến Mở Rộng Dữ Liệu | 100% From Scratch | 4.05M | **83.78%** (TTA) |
-| **DUAL-STREAM PETNET (ĐỀ XUẤT)** | **Nghiên cứu của Nhóm** | **100% From Scratch** | **5.08M** | **86.54% (TTA) / 85.72% (Raw)** |
+| **ResNet-34** | He et al., CVPR 2016 | 100% From Scratch (224x224) | 21.3M | 39.22% |
+| **ResNet-50** | He et al., CVPR 2016 | 100% From Scratch (224x224) | 23.6M | 40.96% |
+| **SEResNet-18 (Baseline - Mai Anh Luân)** | Hu et al., CVPR 2018 | 100% From Scratch (224x224) | 11.28M | **68.00% (Raw) / 68.82% (TTA)** |
+| **ResNet-18 (Baseline - Mai Anh Luân)** | He et al., CVPR 2016 | 100% From Scratch (224x224) | 11.20M | **71.65% (Raw) / 72.50% (TTA)** |
+| **DenseNet-121 (Baseline - Hoàng Lương Phước)** | Huang et al., CVPR 2017 | 100% From Scratch (224x224) | 6.99M | **72.14% (Raw) / 73.51% (TTA)** |
+| **EfficientNet-B0 (Baseline - Nguyễn Hữu Hoàng Luân)** | Tan & Le, ICML 2019 | 100% From Scratch (224x224) | 4.05M | **74.19% (Raw) / 75.28% (TTA)** |
+| **ResNet-18 + New Dataset (Hoàng Lương Phước)** | Cải tiến Mở Rộng Dữ Liệu | 100% From Scratch (288x288) | 11.20M | **67.84% (Raw) / 68.47% (TTA)** |
+| **SEResNet-18 + New Dataset (Mai Anh Luân)** | Cải tiến Mở Rộng Dữ Liệu | 100% From Scratch (288x288) | 11.28M | **70.62% (Raw) / 71.55% (TTA)** |
+| **DenseNet-121 + New Dataset (Hoàng Lương Phước)** | Cải tiến Mở Rộng Dữ Liệu | 100% From Scratch (288x288) | 6.99M | **74.54% (Raw) / 75.33% (TTA)** |
+| **EfficientNet-B0 + New Dataset (Nguyễn Hữu Hoàng Luân)**| Cải tiến Mở Rộng Dữ Liệu | 100% From Scratch (288x288) | 4.05M | **83.32% (Raw) / 83.78% (TTA)** |
+| **DUAL-STREAM PETNET (ĐỀ XUẤT - Nhóm)** | **Kiến trúc Đề xuất của Nhóm** | **100% From Scratch (288x288)** | **5.08M** | **85.72% (Raw) / 86.54% (TTA)** |
 | *Tham chiếu: ResNet-50 (Pretrained)* | *Transfer Learning ImageNet-1K* | *Pretrained 1.28M ảnh* | *23.6M* | *~93.50%* |
 | *Tham chiếu: EfficientNet-B0 (Pretrained)* | *Transfer Learning ImageNet-1K* | *Pretrained 1.28M ảnh* | *4.05M* | *~94.50%* |
 
