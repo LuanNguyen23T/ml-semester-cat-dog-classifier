@@ -1,0 +1,17 @@
+{
+  "model_name": "DenseNet-121 (Densely Connected Convolutional Networks From Scratch)",
+  "total_params": 6991781,
+  "img_size": 288,
+  "batch_size": 48,
+  "epochs_trained": 100,
+  "train_samples": 9301,
+  "test_samples": 3669,
+  "best_epoch": 93,
+  "final_train_loss": 1.391,
+  "final_train_acc": 68.81,
+  "final_test_loss": 1.182,
+  "final_test_acc": 74.03,
+  "best_benchmark_test_acc_raw": 74.54,
+  "best_benchmark_test_acc_tta": 75.33,
+  "delta_tta_gain": 0.79
+}

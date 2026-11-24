@@ -1,0 +1,13 @@
+{
+  "model_name": "Custom SEResNet-18 (SENet)",
+  "total_params": 11282533,
+  "batch_size": 64,
+  "epochs_trained": 100,
+  "final_train_loss": 1.57,
+  "final_train_acc": 69.67,
+  "final_test_loss": 1.595,
+  "final_test_acc": 67.81,
+  "best_test_acc_raw": 68.0,
+  "best_test_acc_tta": 68.82,
+  "delta_tta_gain": 0.82
+}

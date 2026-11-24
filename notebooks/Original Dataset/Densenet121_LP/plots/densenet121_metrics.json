@@ -1,0 +1,13 @@
+{
+  "model_name": "Custom DenseNet-121",
+  "total_params": 6991781,
+  "batch_size": 64,
+  "epochs_trained": 100,
+  "final_train_loss": 1.517,
+  "final_train_acc": 73.07,
+  "final_test_loss": 1.51,
+  "final_test_acc": 71.79,
+  "best_test_acc_raw": 72.14,
+  "best_test_acc_tta": 73.51,
+  "delta_tta_gain": 1.36
+}

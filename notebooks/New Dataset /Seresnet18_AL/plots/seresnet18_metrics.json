@@ -1,0 +1,17 @@
+{
+  "model_name": "SEResNet-18 (SENet - Squeeze-and-Excitation ResNet-18 From Scratch)",
+  "total_params": 11282533,
+  "img_size": 288,
+  "batch_size": 48,
+  "epochs_trained": 100,
+  "train_samples": 9301,
+  "test_samples": 3669,
+  "best_epoch": 84,
+  "final_train_loss": 1.341,
+  "final_train_acc": 70.23,
+  "final_test_loss": 1.307,
+  "final_test_acc": 70.29,
+  "best_benchmark_test_acc_raw": 70.62,
+  "best_benchmark_test_acc_tta": 71.55,
+  "delta_tta_gain": 0.93
+}

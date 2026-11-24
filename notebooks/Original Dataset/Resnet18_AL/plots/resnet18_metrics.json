@@ -1,0 +1,17 @@
+{
+  "model_name": "ResNet-18 (Deep Residual Learning From Scratch - Standard Dataset)",
+  "total_params": 11195493,
+  "img_size": 224,
+  "batch_size": 64,
+  "epochs_trained": 100,
+  "train_samples": 3680,
+  "test_samples": 3669,
+  "best_epoch": 93,
+  "final_train_loss": 1.402,
+  "final_train_acc": 67.64,
+  "final_test_loss": 1.275,
+  "final_test_acc": 71.6,
+  "best_benchmark_test_acc_raw": 71.65,
+  "best_benchmark_test_acc_tta": 72.5,
+  "delta_tta_gain": 0.84
+}
