@@ -1,4 +1,7 @@
+from pathlib import Path
 from pydantic_settings import BaseSettings
+
+ENV_PATH = Path(__file__).resolve().parent.parent.parent / ".env"
 
 class Settings(BaseSettings):
     PROJECT_NAME: str = "Pet Breed Classifier"
@@ -18,7 +21,8 @@ class Settings(BaseSettings):
     AI_DEVICE: str = "auto"
 
     class Config:
-        env_file = ".env"
+        env_file = str(ENV_PATH)
+        extra = "ignore"
 
     @property
     def SQLALCHEMY_DATABASE_URI(self) -> str:
