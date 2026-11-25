@@ -5,6 +5,7 @@ from __future__ import annotations
 import time
 import traceback
 import urllib.request
+from pathlib import Path
 from typing import List, Tuple
 from uuid import UUID
 
@@ -19,6 +20,13 @@ from app.repositories import prediction as prediction_repo
 
 
 def _download_image_bytes(image_url: str) -> bytes:
+    """Fetch image bytes from URL or local static upload path."""
+    if "/static/uploads/" in image_url:
+        filename = image_url.split("/static/uploads/")[-1]
+        local_path = Path(__file__).resolve().parent.parent.parent / "static" / "uploads" / filename
+        if local_path.exists():
+            return local_path.read_bytes()
+
     req = urllib.request.Request(image_url, headers={"User-Agent": "Mozilla/5.0"})
     with urllib.request.urlopen(req, timeout=30) as response:
         return response.read()

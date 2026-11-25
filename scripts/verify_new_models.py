@@ -23,7 +23,11 @@ from app.ai.cnn_classifiers import (  # noqa: E402
 )
 from app.ai.common import BREED_CATALOGUE  # noqa: E402
 
-DEFAULT_DATASET_DIR = Path("~/.cache/oxford_iiit_pet_eval").expanduser()
+LOCAL_DATASET_DIR = REPO_ROOT / "dataset"
+if (LOCAL_DATASET_DIR / "oxford-iiit-pet").exists():
+    DEFAULT_DATASET_DIR = LOCAL_DATASET_DIR
+else:
+    DEFAULT_DATASET_DIR = Path("~/.cache/oxford_iiit_pet_eval").expanduser()
 
 
 def check_class_alignment(tv_classes: list[str]) -> bool:
@@ -114,7 +118,8 @@ def main() -> None:
     args.dataset_dir.mkdir(parents=True, exist_ok=True)
     print(f"Dataset directory (outside repo): {args.dataset_dir}")
 
-    dataset = OxfordIIITPet(root=str(args.dataset_dir), split="test", download=True)
+    has_local = (args.dataset_dir / "oxford-iiit-pet").exists()
+    dataset = OxfordIIITPet(root=str(args.dataset_dir), split="test", download=not has_local)
     aligned = check_class_alignment(list(dataset.classes))
     if not aligned:
         raise SystemExit("Class alignment check failed; inspect mismatches above.")
@@ -134,7 +139,11 @@ def main() -> None:
 
     rows = []
     for label, cls in specs:
-        classifier = cls(top_k=5)
+        try:
+            classifier = cls(top_k=5)
+        except FileNotFoundError as err:
+            print(f"[CẢNH BÁO] Bỏ qua {label} do thiếu file trọng số: {err}")
+            continue
         for use_tta in (False, True):
             metrics = evaluate_model(label, classifier, samples, use_tta=use_tta)
             rows.append(metrics)
