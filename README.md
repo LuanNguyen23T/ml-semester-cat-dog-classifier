@@ -256,6 +256,17 @@ Chạy trực tiếp Cell 13 trong từng notebook để xuất ma trận nhầm
 
 ---
 
+## 🌐 Triển Khai Ứng Dụng Web (Web Application Deployment)
+
+Hệ thống cung cấp trọn gói giao diện Web hiện đại phục vụ trực quan hóa và kiểm thử suy luận (Inference UI):
+- **Backend:** FastAPI (Python 3.10+), hỗ trợ đa mô hình (5 mô hình CNN từ scratch), tách nền tự động (DeepLabV3), Test-Time Augmentation (TTA), lưu vết dự đoán và phân tích thống kê.
+- **Frontend:** React 19 + TypeScript + Vite + Tailwind CSS, giao diện kéo-thả ảnh, biểu đồ Top-K phân loại, so sánh đồng thời nhiều mô hình (Batch Comparison).
+- **Cơ sở dữ liệu:** PostgreSQL 16 (chạy qua Docker Compose) hoặc lưu trữ cục bộ.
+
+Chi tiết các bước cài đặt và khởi chạy xem tại tài liệu hướng dẫn [SETUP.md](SETUP.md).
+
+---
+
 ## 📑 Tài Liệu Tham Khảo Cốt Lõi
 
 1. **Parkhi et al.**, *"Cats and Dogs"*, IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2012.

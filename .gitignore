@@ -9,12 +9,28 @@ __pycache__/
 
 # Environments
 .env
+.env.*
+!.env.example
 .venv
+*/.venv/
 env/
 venv/
 ENV/
 env.bak/
 venv.bak/
+
+# Node.js & Frontend build
+node_modules/
+*/node_modules/
+dist/
+*/dist/
+.vite/
+*/.vite/
+
+# User uploads & cache
+uploads/
+*/uploads/
+tmp_samples/
 
 # IDE & Editor configs
 .vscode/
@@ -34,6 +50,7 @@ Thumbs.db
 checkpoints/
 */checkpoints/
 **/checkpoints/
+backend/weights/
 *.pth
 *.pt
 *.ckpt
@@ -47,3 +64,4 @@ wandb/
 dataset/
 *.zip
 *.tar.gz
+

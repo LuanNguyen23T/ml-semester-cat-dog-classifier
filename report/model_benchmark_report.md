@@ -12,7 +12,7 @@
   * Tập kiểm thử độc lập (`test`): **3,669 ảnh**.
 * **Độ phức tạp bài toán:** Phân loại chi tiết **37 giống chó mèo (Fine-Grained Classification)**. Nhiệm vụ này khắt khe hơn rất nhiều so với bài toán nhị phân (Cat vs Dog), do nhiều giống có ngoại hình rất tương đồng (như *American Pit Bull* vs *Staffordshire Bull Terrier*, *Beagle* vs *English Foxhound*).
 * **Chuẩn mực đánh giá (Evaluation Protocol):**
-  * **100% From Scratch:** Toàn bộ tham số được khởi tạo ngẫu nhiên (Kaiming / He Normal Initialization). Tuyệt đối **không sử dụng trọng số nạp sẵn (No Pretrained Weights / No ImageNet Transfer Learning)**.
+  * **100% From Scratch:** Toàn bộ tham số được khởi tạo ngẫu nhiên (Kaiming / He Normal Initialization). Hoàn toàn **không sử dụng trọng số nạp sẵn (No Pretrained Weights / No ImageNet Transfer Learning)**.
   * **Ngân sách huấn luyện công bằng:** Chuẩn hóa nghiêm ngặt **50 Epochs**, sử dụng optimizer AdamW kết hợp lịch học Cosine Annealing trên cùng phần cứng (GPU Tesla T4).
 
 ---
@@ -98,7 +98,7 @@ flowchart LR
 | **Hybrid V1** | MultiScaleStem + Dual Attention MBConv (Full Image) | 5.37M | 20.63% | 20.77% | 20 lớp Sigmoid nối tiếp gây suy giảm tín hiệu ($0.25^{10}$). |
 | **Hybrid V2** | Continuous Shortcuts + Residual Part-Attention ($x \cdot (1 + \text{mask})$) | 3.49M | 47.94% | 47.94% | Vượt qua toàn bộ 11 baseline full-image! |
 | **Hybrid V3** | Dual-Stage Architecture (Residual Conv-SE + MBConv) | 4.65M | 48.35% | 49.58% (2-View) | Thiết lập đỉnh cao mới trên ảnh toàn cảnh. |
-| **Hybrid V3-Plus (Full Image)** | Dual-Stage + 4-View Multi-Scale TTA (Full Image) | 4.65M | 47.67% | 49.09% (4-View) | Vô địch tuyệt đối trên tập dữ liệu ảnh toàn cảnh gốc. |
+| **Hybrid V3-Plus (Full Image)** | Dual-Stage + 4-View Multi-Scale TTA (Full Image) | 4.65M | 47.67% | 49.09% (4-View) | Dẫn đầu toàn diện trên tập dữ liệu ảnh toàn cảnh gốc. |
 | **Hybrid V3-Plus (Data-Centric)** | **Dual-Stage + Foreground BBox Crop + Neutral Gray BG + 4-View TTA** | **4.65M** | **63.75%** | **64.68% (4-View)** | 🏆 **KỶ LỤC ĐỈNH CAO: Bứt phá +15.6% nhờ Data-Centric AI!** |
 
 ---
