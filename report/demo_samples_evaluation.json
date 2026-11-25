@@ -1,0 +1,474 @@
+{
+  "evaluation_name": "Web Demo Dataset Verification & Stress Test",
+  "eval_time": "2026-11-25 16:15:37",
+  "model_used": "Dual-Stream EfficientNet-B0",
+  "known_breeds_summary": {
+    "total_images": 370,
+    "top1_accuracy": 78.65,
+    "top5_accuracy": 93.51,
+    "flagged_as_unknown_rate": 33.51,
+    "per_breed": {
+      "Abyssinian": {
+        "total_images": 10,
+        "top1_correct": 10,
+        "top1_accuracy": 100.0,
+        "top5_accuracy": 100.0,
+        "mean_confidence": 0.96
+      },
+      "Bengal": {
+        "total_images": 10,
+        "top1_correct": 9,
+        "top1_accuracy": 90.0,
+        "top5_accuracy": 100.0,
+        "mean_confidence": 0.7173
+      },
+      "Birman": {
+        "total_images": 10,
+        "top1_correct": 6,
+        "top1_accuracy": 60.0,
+        "top5_accuracy": 90.0,
+        "mean_confidence": 0.7213
+      },
+      "Bombay": {
+        "total_images": 10,
+        "top1_correct": 9,
+        "top1_accuracy": 90.0,
+        "top5_accuracy": 100.0,
+        "mean_confidence": 0.8851
+      },
+      "British_Shorthair": {
+        "total_images": 10,
+        "top1_correct": 10,
+        "top1_accuracy": 100.0,
+        "top5_accuracy": 100.0,
+        "mean_confidence": 0.745
+      },
+      "Egyptian_Mau": {
+        "total_images": 10,
+        "top1_correct": 2,
+        "top1_accuracy": 20.0,
+        "top5_accuracy": 100.0,
+        "mean_confidence": 0.5791
+      },
+      "Maine_Coon": {
+        "total_images": 10,
+        "top1_correct": 8,
+        "top1_accuracy": 80.0,
+        "top5_accuracy": 90.0,
+        "mean_confidence": 0.8263
+      },
+      "Persian": {
+        "total_images": 10,
+        "top1_correct": 2,
+        "top1_accuracy": 20.0,
+        "top5_accuracy": 50.0,
+        "mean_confidence": 0.4849
+      },
+      "Ragdoll": {
+        "total_images": 10,
+        "top1_correct": 6,
+        "top1_accuracy": 60.0,
+        "top5_accuracy": 100.0,
+        "mean_confidence": 0.7576
+      },
+      "Russian_Blue": {
+        "total_images": 10,
+        "top1_correct": 6,
+        "top1_accuracy": 60.0,
+        "top5_accuracy": 70.0,
+        "mean_confidence": 0.6788
+      },
+      "Siamese": {
+        "total_images": 10,
+        "top1_correct": 7,
+        "top1_accuracy": 70.0,
+        "top5_accuracy": 80.0,
+        "mean_confidence": 0.569
+      },
+      "Sphynx": {
+        "total_images": 10,
+        "top1_correct": 10,
+        "top1_accuracy": 100.0,
+        "top5_accuracy": 100.0,
+        "mean_confidence": 0.8511
+      },
+      "american_bulldog": {
+        "total_images": 10,
+        "top1_correct": 4,
+        "top1_accuracy": 40.0,
+        "top5_accuracy": 70.0,
+        "mean_confidence": 0.5015
+      },
+      "american_pit_bull_terrier": {
+        "total_images": 10,
+        "top1_correct": 4,
+        "top1_accuracy": 40.0,
+        "top5_accuracy": 100.0,
+        "mean_confidence": 0.593
+      },
+      "basset_hound": {
+        "total_images": 10,
+        "top1_correct": 9,
+        "top1_accuracy": 90.0,
+        "top5_accuracy": 90.0,
+        "mean_confidence": 0.881
+      },
+      "beagle": {
+        "total_images": 10,
+        "top1_correct": 9,
+        "top1_accuracy": 90.0,
+        "top5_accuracy": 100.0,
+        "mean_confidence": 0.7299
+      },
+      "boxer": {
+        "total_images": 10,
+        "top1_correct": 9,
+        "top1_accuracy": 90.0,
+        "top5_accuracy": 100.0,
+        "mean_confidence": 0.8451
+      },
+      "chihuahua": {
+        "total_images": 10,
+        "top1_correct": 9,
+        "top1_accuracy": 90.0,
+        "top5_accuracy": 90.0,
+        "mean_confidence": 0.7699
+      },
+      "english_cocker_spaniel": {
+        "total_images": 10,
+        "top1_correct": 9,
+        "top1_accuracy": 90.0,
+        "top5_accuracy": 100.0,
+        "mean_confidence": 0.8201
+      },
+      "english_setter": {
+        "total_images": 10,
+        "top1_correct": 8,
+        "top1_accuracy": 80.0,
+        "top5_accuracy": 100.0,
+        "mean_confidence": 0.7641
+      },
+      "german_shorthaired": {
+        "total_images": 10,
+        "top1_correct": 10,
+        "top1_accuracy": 100.0,
+        "top5_accuracy": 100.0,
+        "mean_confidence": 0.9366
+      },
+      "great_pyrenees": {
+        "total_images": 10,
+        "top1_correct": 8,
+        "top1_accuracy": 80.0,
+        "top5_accuracy": 100.0,
+        "mean_confidence": 0.5787
+      },
+      "havanese": {
+        "total_images": 10,
+        "top1_correct": 6,
+        "top1_accuracy": 60.0,
+        "top5_accuracy": 90.0,
+        "mean_confidence": 0.652
+      },
+      "japanese_chin": {
+        "total_images": 10,
+        "top1_correct": 9,
+        "top1_accuracy": 90.0,
+        "top5_accuracy": 100.0,
+        "mean_confidence": 0.8869
+      },
+      "keeshond": {
+        "total_images": 10,
+        "top1_correct": 10,
+        "top1_accuracy": 100.0,
+        "top5_accuracy": 100.0,
+        "mean_confidence": 0.9232
+      },
+      "leonberger": {
+        "total_images": 10,
+        "top1_correct": 9,
+        "top1_accuracy": 90.0,
+        "top5_accuracy": 100.0,
+        "mean_confidence": 0.8262
+      },
+      "miniature_pinscher": {
+        "total_images": 10,
+        "top1_correct": 10,
+        "top1_accuracy": 100.0,
+        "top5_accuracy": 100.0,
+        "mean_confidence": 0.8282
+      },
+      "newfoundland": {
+        "total_images": 10,
+        "top1_correct": 7,
+        "top1_accuracy": 70.0,
+        "top5_accuracy": 80.0,
+        "mean_confidence": 0.6801
+      },
+      "pomeranian": {
+        "total_images": 10,
+        "top1_correct": 8,
+        "top1_accuracy": 80.0,
+        "top5_accuracy": 90.0,
+        "mean_confidence": 0.7325
+      },
+      "pug": {
+        "total_images": 10,
+        "top1_correct": 5,
+        "top1_accuracy": 50.0,
+        "top5_accuracy": 70.0,
+        "mean_confidence": 0.5406
+      },
+      "saint_bernard": {
+        "total_images": 10,
+        "top1_correct": 10,
+        "top1_accuracy": 100.0,
+        "top5_accuracy": 100.0,
+        "mean_confidence": 0.9767
+      },
+      "samoyed": {
+        "total_images": 10,
+        "top1_correct": 8,
+        "top1_accuracy": 80.0,
+        "top5_accuracy": 100.0,
+        "mean_confidence": 0.7769
+      },
+      "scottish_terrier": {
+        "total_images": 10,
+        "top1_correct": 10,
+        "top1_accuracy": 100.0,
+        "top5_accuracy": 100.0,
+        "mean_confidence": 0.9677
+      },
+      "shiba_inu": {
+        "total_images": 10,
+        "top1_correct": 8,
+        "top1_accuracy": 80.0,
+        "top5_accuracy": 100.0,
+        "mean_confidence": 0.8099
+      },
+      "staffordshire_bull_terrier": {
+        "total_images": 10,
+        "top1_correct": 9,
+        "top1_accuracy": 90.0,
+        "top5_accuracy": 100.0,
+        "mean_confidence": 0.747
+      },
+      "wheaten_terrier": {
+        "total_images": 10,
+        "top1_correct": 9,
+        "top1_accuracy": 90.0,
+        "top5_accuracy": 100.0,
+        "mean_confidence": 0.8766
+      },
+      "yorkshire_terrier": {
+        "total_images": 10,
+        "top1_correct": 9,
+        "top1_accuracy": 90.0,
+        "top5_accuracy": 100.0,
+        "mean_confidence": 0.894
+      }
+    }
+  },
+  "non_pet_objects_test": [
+    {
+      "image_name": "airplane.jpg",
+      "is_unknown_detected": true,
+      "status_label_vi": "Giống chưa xác định (Ngoài tập huấn luyện)",
+      "unknown_score": 0.676488,
+      "closest_resembling_breed": "newfoundland",
+      "resembling_score": 0.378906,
+      "summary": "Phát hiện độ bất định cao (67.6% > ngưỡng 35.0%). Thú cưng có nhiều nét khác biệt với 37 giống đã học, có khả năng cao là giống mới chưa có trong hệ thống."
+    },
+    {
+      "image_name": "bear.jpg",
+      "is_unknown_detected": true,
+      "status_label_vi": "Giống chưa xác định (Ngoài tập huấn luyện)",
+      "unknown_score": 0.801738,
+      "closest_resembling_breed": "japanese_chin",
+      "resembling_score": 0.24282,
+      "summary": "Phát hiện độ bất định cao (80.2% > ngưỡng 35.0%). Thú cưng có nhiều nét khác biệt với 37 giống đã học, có khả năng cao là giống mới chưa có trong hệ thống."
+    },
+    {
+      "image_name": "bicycle.jpg",
+      "is_unknown_detected": true,
+      "status_label_vi": "Giống chưa xác định (Ngoài tập huấn luyện)",
+      "unknown_score": 0.847686,
+      "closest_resembling_breed": "chihuahua",
+      "resembling_score": 0.173812,
+      "summary": "Phát hiện độ bất định cao (84.8% > ngưỡng 35.0%). Thú cưng có nhiều nét khác biệt với 37 giống đã học, có khả năng cao là giống mới chưa có trong hệ thống."
+    },
+    {
+      "image_name": "eagle.jpg",
+      "is_unknown_detected": true,
+      "status_label_vi": "Giống chưa xác định (Ngoài tập huấn luyện)",
+      "unknown_score": 0.799276,
+      "closest_resembling_breed": "newfoundland",
+      "resembling_score": 0.244078,
+      "summary": "Phát hiện độ bất định cao (79.9% > ngưỡng 35.0%). Thú cưng có nhiều nét khác biệt với 37 giống đã học, có khả năng cao là giống mới chưa có trong hệ thống."
+    },
+    {
+      "image_name": "elephant.jpg",
+      "is_unknown_detected": true,
+      "status_label_vi": "Giống chưa xác định (Ngoài tập huấn luyện)",
+      "unknown_score": 0.869765,
+      "closest_resembling_breed": "basset_hound",
+      "resembling_score": 0.182814,
+      "summary": "Phát hiện độ bất định cao (87.0% > ngưỡng 35.0%). Thú cưng có nhiều nét khác biệt với 37 giống đã học, có khả năng cao là giống mới chưa có trong hệ thống."
+    },
+    {
+      "image_name": "guitar.jpg",
+      "is_unknown_detected": true,
+      "status_label_vi": "Giống chưa xác định (Ngoài tập huấn luyện)",
+      "unknown_score": 0.64961,
+      "closest_resembling_breed": "Birman",
+      "resembling_score": 0.402151,
+      "summary": "Phát hiện độ bất định cao (65.0% > ngưỡng 35.0%). Thú cưng có nhiều nét khác biệt với 37 giống đã học, có khả năng cao là giống mới chưa có trong hệ thống."
+    },
+    {
+      "image_name": "landscape.jpg",
+      "is_unknown_detected": true,
+      "status_label_vi": "Giống chưa xác định (Ngoài tập huấn luyện)",
+      "unknown_score": 0.412075,
+      "closest_resembling_breed": "Bengal",
+      "resembling_score": 0.642529,
+      "summary": "Phát hiện độ bất định cao (41.2% > ngưỡng 35.0%). Thú cưng có nhiều nét khác biệt với 37 giống đã học, có khả năng cao là giống mới chưa có trong hệ thống."
+    },
+    {
+      "image_name": "lion.jpg",
+      "is_unknown_detected": true,
+      "status_label_vi": "Giống chưa xác định (Ngoài tập huấn luyện)",
+      "unknown_score": 0.816799,
+      "closest_resembling_breed": "havanese",
+      "resembling_score": 0.215674,
+      "summary": "Phát hiện độ bất định cao (81.7% > ngưỡng 35.0%). Thú cưng có nhiều nét khác biệt với 37 giống đã học, có khả năng cao là giống mới chưa có trong hệ thống."
+    },
+    {
+      "image_name": "sports_car.jpg",
+      "is_unknown_detected": true,
+      "status_label_vi": "Giống chưa xác định (Ngoài tập huấn luyện)",
+      "unknown_score": 0.702142,
+      "closest_resembling_breed": "Sphynx",
+      "resembling_score": 0.350569,
+      "summary": "Phát hiện độ bất định cao (70.2% > ngưỡng 35.0%). Thú cưng có nhiều nét khác biệt với 37 giống đã học, có khả năng cao là giống mới chưa có trong hệ thống."
+    },
+    {
+      "image_name": "tiger.jpg",
+      "is_unknown_detected": true,
+      "status_label_vi": "Giống chưa xác định (Ngoài tập huấn luyện)",
+      "unknown_score": 0.705382,
+      "closest_resembling_breed": "beagle",
+      "resembling_score": 0.359119,
+      "summary": "Phát hiện độ bất định cao (70.5% > ngưỡng 35.0%). Thú cưng có nhiều nét khác biệt với 37 giống đã học, có khả năng cao là giống mới chưa có trong hệ thống."
+    }
+  ],
+  "unseen_dog_breeds_test": [
+    {
+      "image_name": "doberman_01.jpg",
+      "is_unknown_detected": true,
+      "status_label_vi": "Giống chưa xác định (Ngoài tập huấn luyện)",
+      "unknown_score": 0.765675,
+      "closest_resembling_breed": "miniature_pinscher",
+      "resembling_score": 0.304804,
+      "summary": "Phát hiện độ bất định cao (76.6% > ngưỡng 35.0%). Thú cưng có nhiều nét khác biệt với 37 giống đã học, có khả năng cao là giống mới chưa có trong hệ thống."
+    },
+    {
+      "image_name": "doberman_02.jpg",
+      "is_unknown_detected": false,
+      "status_label_vi": "Giống đã xác định",
+      "unknown_score": 0.029804,
+      "closest_resembling_breed": "miniature_pinscher",
+      "resembling_score": 0.978128,
+      "summary": "Độ tin cậy nhận diện cao (97.0%). Các đặc trưng giải phẫu khớp rõ ràng với giống loài trong danh mục."
+    },
+    {
+      "image_name": "french_bulldog_01.jpg",
+      "is_unknown_detected": false,
+      "status_label_vi": "Giống đã xác định",
+      "unknown_score": 0.111512,
+      "closest_resembling_breed": "staffordshire_bull_terrier",
+      "resembling_score": 0.914674,
+      "summary": "Độ tin cậy nhận diện cao (88.8%). Các đặc trưng giải phẫu khớp rõ ràng với giống loài trong danh mục."
+    },
+    {
+      "image_name": "french_bulldog_02.jpg",
+      "is_unknown_detected": true,
+      "status_label_vi": "Giống chưa xác định (Ngoài tập huấn luyện)",
+      "unknown_score": 0.491085,
+      "closest_resembling_breed": "pug",
+      "resembling_score": 0.568787,
+      "summary": "Phát hiện độ bất định cao (49.1% > ngưỡng 35.0%). Thú cưng có nhiều nét khác biệt với 37 giống đã học, có khả năng cao là giống mới chưa có trong hệ thống."
+    },
+    {
+      "image_name": "german_shepherd_01.jpg",
+      "is_unknown_detected": true,
+      "status_label_vi": "Giống chưa xác định (Ngoài tập huấn luyện)",
+      "unknown_score": 0.40765,
+      "closest_resembling_breed": "chihuahua",
+      "resembling_score": 0.656795,
+      "summary": "Phát hiện độ bất định cao (40.8% > ngưỡng 35.0%). Thú cưng có nhiều nét khác biệt với 37 giống đã học, có khả năng cao là giống mới chưa có trong hệ thống."
+    },
+    {
+      "image_name": "german_shepherd_02.jpg",
+      "is_unknown_detected": true,
+      "status_label_vi": "Giống chưa xác định (Ngoài tập huấn luyện)",
+      "unknown_score": 0.808963,
+      "closest_resembling_breed": "pug",
+      "resembling_score": 0.224546,
+      "summary": "Phát hiện độ bất định cao (80.9% > ngưỡng 35.0%). Thú cưng có nhiều nét khác biệt với 37 giống đã học, có khả năng cao là giống mới chưa có trong hệ thống."
+    },
+    {
+      "image_name": "golden_retriever_01.jpg",
+      "is_unknown_detected": true,
+      "status_label_vi": "Giống chưa xác định (Ngoài tập huấn luyện)",
+      "unknown_score": 0.794739,
+      "closest_resembling_breed": "havanese",
+      "resembling_score": 0.246463,
+      "summary": "Phát hiện độ bất định cao (79.5% > ngưỡng 35.0%). Thú cưng có nhiều nét khác biệt với 37 giống đã học, có khả năng cao là giống mới chưa có trong hệ thống."
+    },
+    {
+      "image_name": "golden_retriever_02.jpg",
+      "is_unknown_detected": true,
+      "status_label_vi": "Giống chưa xác định (Ngoài tập huấn luyện)",
+      "unknown_score": 0.86349,
+      "closest_resembling_breed": "chihuahua",
+      "resembling_score": 0.179301,
+      "summary": "Phát hiện độ bất định cao (86.3% > ngưỡng 35.0%). Thú cưng có nhiều nét khác biệt với 37 giống đã học, có khả năng cao là giống mới chưa có trong hệ thống."
+    },
+    {
+      "image_name": "rottweiler_01.jpg",
+      "is_unknown_detected": true,
+      "status_label_vi": "Giống chưa xác định (Ngoài tập huấn luyện)",
+      "unknown_score": 0.484995,
+      "closest_resembling_breed": "miniature_pinscher",
+      "resembling_score": 0.589255,
+      "summary": "Phát hiện độ bất định cao (48.5% > ngưỡng 35.0%). Thú cưng có nhiều nét khác biệt với 37 giống đã học, có khả năng cao là giống mới chưa có trong hệ thống."
+    },
+    {
+      "image_name": "rottweiler_02.jpg",
+      "is_unknown_detected": true,
+      "status_label_vi": "Giống chưa xác định (Ngoài tập huấn luyện)",
+      "unknown_score": 0.659522,
+      "closest_resembling_breed": "basset_hound",
+      "resembling_score": 0.395682,
+      "summary": "Phát hiện độ bất định cao (66.0% > ngưỡng 35.0%). Thú cưng có nhiều nét khác biệt với 37 giống đã học, có khả năng cao là giống mới chưa có trong hệ thống."
+    },
+    {
+      "image_name": "siberian_husky_01.jpg",
+      "is_unknown_detected": true,
+      "status_label_vi": "Giống chưa xác định (Ngoài tập huấn luyện)",
+      "unknown_score": 0.672796,
+      "closest_resembling_breed": "keeshond",
+      "resembling_score": 0.390931,
+      "summary": "Phát hiện độ bất định cao (67.3% > ngưỡng 35.0%). Thú cưng có nhiều nét khác biệt với 37 giống đã học, có khả năng cao là giống mới chưa có trong hệ thống."
+    },
+    {
+      "image_name": "siberian_husky_02.jpg",
+      "is_unknown_detected": true,
+      "status_label_vi": "Giống chưa xác định (Ngoài tập huấn luyện)",
+      "unknown_score": 0.679196,
+      "closest_resembling_breed": "Russian_Blue",
+      "resembling_score": 0.394542,
+      "summary": "Phát hiện độ bất định cao (67.9% > ngưỡng 35.0%). Thú cưng có nhiều nét khác biệt với 37 giống đã học, có khả năng cao là giống mới chưa có trong hệ thống."
+    }
+  ]
+}

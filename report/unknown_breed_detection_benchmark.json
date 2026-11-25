@@ -1,0 +1,125 @@
+{
+  "evaluation_name": "Novel / Unknown Breed Recognition Benchmark (Open-Set OOD)",
+  "num_known_samples": 50,
+  "num_unknown_samples": 50,
+  "metric_tested": "composite",
+  "models": {
+    "resnet18": {
+      "model_name": "ResNet-18",
+      "threshold_used": 0.5,
+      "mean_uncertainty_known": 0.3372,
+      "mean_uncertainty_unknown": 0.5513,
+      "known_accuracy_pct": 66.0,
+      "unknown_detection_pct": 64.0,
+      "overall_accuracy_pct": 65.0,
+      "auroc_pct": 72.6,
+      "fpr95_pct": 60.0
+    },
+    "seresnet18": {
+      "model_name": "SEResNet-18",
+      "threshold_used": 0.5,
+      "mean_uncertainty_known": 0.3399,
+      "mean_uncertainty_unknown": 0.5046,
+      "known_accuracy_pct": 68.0,
+      "unknown_detection_pct": 56.0,
+      "overall_accuracy_pct": 62.0,
+      "auroc_pct": 66.8,
+      "fpr95_pct": 68.0
+    },
+    "densenet121": {
+      "model_name": "DenseNet-121",
+      "threshold_used": 0.42,
+      "mean_uncertainty_known": 0.2776,
+      "mean_uncertainty_unknown": 0.4878,
+      "known_accuracy_pct": 72.0,
+      "unknown_detection_pct": 60.0,
+      "overall_accuracy_pct": 66.0,
+      "auroc_pct": 72.12,
+      "fpr95_pct": 58.0
+    },
+    "efficientnet-b0": {
+      "model_name": "EfficientNet-B0",
+      "threshold_used": 0.38,
+      "mean_uncertainty_known": 0.2475,
+      "mean_uncertainty_unknown": 0.5167,
+      "known_accuracy_pct": 72.0,
+      "unknown_detection_pct": 72.0,
+      "overall_accuracy_pct": 72.0,
+      "auroc_pct": 77.36,
+      "fpr95_pct": 62.0
+    },
+    "dual-stream-efficientnet": {
+      "model_name": "Dual-Stream EfficientNet-B0",
+      "threshold_used": 0.35,
+      "mean_uncertainty_known": 0.1957,
+      "mean_uncertainty_unknown": 0.4476,
+      "known_accuracy_pct": 82.0,
+      "unknown_detection_pct": 64.0,
+      "overall_accuracy_pct": 73.0,
+      "auroc_pct": 76.8,
+      "fpr95_pct": 64.0
+    }
+  },
+  "qualitative_cases": [
+    {
+      "type": "UNKNOWN_BREED",
+      "actual_breed": "Siberian Husky",
+      "is_unknown_detected": true,
+      "status_label_vi": "Giống chưa xác định (Ngoài tập huấn luyện)",
+      "unknown_score": 0.873707,
+      "closest_resembling_known_breed": "Russian_Blue",
+      "resembling_score": 0.158257,
+      "explanation": "Phát hiện độ bất định cao (87.4% > ngưỡng 35.0%). Thú cưng có nhiều nét khác biệt với 37 giống đã học, có khả năng cao là giống mới chưa có trong hệ thống."
+    },
+    {
+      "type": "UNKNOWN_BREED",
+      "actual_breed": "Rottweiler",
+      "is_unknown_detected": false,
+      "status_label_vi": "Giống đã xác định",
+      "unknown_score": 0.051609,
+      "closest_resembling_known_breed": "miniature_pinscher",
+      "resembling_score": 0.960594,
+      "explanation": "Độ tin cậy nhận diện cao (94.8%). Các đặc trưng giải phẫu khớp rõ ràng với giống loài trong danh mục."
+    },
+    {
+      "type": "KNOWN_BREED",
+      "actual_breed": "Yorkshire Terrier",
+      "is_unknown_detected": false,
+      "status_label_vi": "Giống đã xác định",
+      "unknown_score": 0.035424,
+      "predicted_breed": "yorkshire_terrier",
+      "prediction_score": 0.973249,
+      "explanation": "Độ tin cậy nhận diện cao (96.5%). Các đặc trưng giải phẫu khớp rõ ràng với giống loài trong danh mục."
+    },
+    {
+      "type": "KNOWN_BREED",
+      "actual_breed": "Saint Bernard",
+      "is_unknown_detected": false,
+      "status_label_vi": "Giống đã xác định",
+      "unknown_score": 0.028101,
+      "predicted_breed": "saint_bernard",
+      "prediction_score": 0.979342,
+      "explanation": "Độ tin cậy nhận diện cao (97.2%). Các đặc trưng giải phẫu khớp rõ ràng với giống loài trong danh mục."
+    },
+    {
+      "type": "KNOWN_BREED",
+      "actual_breed": "Chihuahua",
+      "is_unknown_detected": false,
+      "status_label_vi": "Giống đã xác định",
+      "unknown_score": 0.199989,
+      "predicted_breed": "chihuahua",
+      "prediction_score": 0.838544,
+      "explanation": "Độ tin cậy nhận diện cao (80.0%). Các đặc trưng giải phẫu khớp rõ ràng với giống loài trong danh mục."
+    },
+    {
+      "type": "KNOWN_BREED",
+      "actual_breed": "Beagle",
+      "is_unknown_detected": false,
+      "status_label_vi": "Giống đã xác định",
+      "unknown_score": 0.293816,
+      "predicted_breed": "basset_hound",
+      "prediction_score": 0.767887,
+      "explanation": "Độ tin cậy nhận diện cao (70.6%). Các đặc trưng giải phẫu khớp rõ ràng với giống loài trong danh mục."
+    }
+  ]
+}

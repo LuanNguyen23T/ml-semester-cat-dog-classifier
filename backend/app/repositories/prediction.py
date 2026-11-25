@@ -8,17 +8,20 @@ def create_prediction(
     image_key: str,
     method: Optional[str] = None,
     batch_id: Optional[UUID] = None,
+    note: Optional[str] = None,
 ) -> Prediction:
     db_obj = Prediction(
         image_key=image_key,
         method=method,
         batch_id=batch_id,
+        note=note,
         status=PredictionStatus.UPLOADED
     )
     db.add(db_obj)
     db.commit()
     db.refresh(db_obj)
     return db_obj
+
 
 def get_prediction(db: Session, prediction_id: UUID) -> Optional[Prediction]:
     return db.query(Prediction).filter(Prediction.id == prediction_id).first()
@@ -73,3 +76,16 @@ def update_prediction_status(
     db.commit()
     db.refresh(db_obj)
     return db_obj
+
+
+def delete_prediction(db: Session, prediction_id: UUID, delete_batch: bool = True) -> int:
+    pred = db.query(Prediction).filter(Prediction.id == prediction_id).first()
+    if not pred:
+        return 0
+    if pred.batch_id and delete_batch:
+        deleted = db.query(Prediction).filter(Prediction.batch_id == pred.batch_id).delete()
+    else:
+        db.delete(pred)
+        deleted = 1
+    db.commit()
+    return deleted

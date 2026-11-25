@@ -1,4 +1,4 @@
-import { CheckCircle, XCircle, Clock, Loader2, Award, Cpu, TrendingUp, Sparkles } from 'lucide-react';
+import { CheckCircle, XCircle, Clock, Loader2, Award, Cpu, TrendingUp, Sparkles, AlertTriangle, Tag } from 'lucide-react';
 import {
   formatBreedName,
   getModelDisplayName,
@@ -207,15 +207,64 @@ export function PredictionResult({ prediction }: PredictionResultProps) {
                   {prediction.processing_time.toFixed(2)}s
                 </span>
               )}
+              {prediction.is_unknown_breed && (
+                <span
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 4,
+                    fontSize: 11,
+                    fontWeight: 700,
+                    padding: '3px 8px',
+                    borderRadius: 6,
+                    background: 'rgba(245, 158, 11, 0.15)',
+                    color: '#f59e0b',
+                    border: '1px solid rgba(245, 158, 11, 0.4)',
+                  }}
+                >
+                  <AlertTriangle size={11} />
+                  Chưa xác định
+                </span>
+              )}
             </div>
 
-            <h2 style={{ fontSize: 28, fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.1 }}>
-              {breedDisplayName}
+            <h2
+              style={{
+                fontSize: 28,
+                fontWeight: 800,
+                letterSpacing: '-0.02em',
+                lineHeight: 1.1,
+                color: prediction.is_unknown_breed ? '#f59e0b' : 'inherit',
+              }}
+            >
+              {prediction.is_unknown_breed ? 'Chưa xác định' : breedDisplayName}
             </h2>
             <p style={{ color: 'var(--color-text-muted)', fontSize: 14, marginTop: 6 }}>
               <Award size={13} style={{ display: 'inline', marginRight: 4 }} />
-              {speciesName}
+              {prediction.is_unknown_breed
+                ? `Tương đồng gần nhất: ${breedDisplayName} (${speciesName})`
+                : speciesName}
             </p>
+            {prediction.note && (
+              <div
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 5,
+                  marginTop: 8,
+                  padding: '3px 8px',
+                  borderRadius: 6,
+                  background: 'rgba(139, 92, 246, 0.08)',
+                  border: '1px solid rgba(139, 92, 246, 0.22)',
+                  color: 'var(--color-accent)',
+                  fontSize: 12,
+                  fontWeight: 600,
+                }}
+              >
+                <Tag size={12} />
+                <span>Nhãn thực tế: <strong>{prediction.note}</strong></span>
+              </div>
+            )}
           </div>
 
           {score !== null && score !== undefined && <ScoreRing score={score} />}

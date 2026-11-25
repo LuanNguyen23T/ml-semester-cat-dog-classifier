@@ -1,4 +1,4 @@
-import { AlertTriangle, CheckCircle2, Clock, Loader2, Sparkles, XCircle } from 'lucide-react';
+import { AlertTriangle, CheckCircle2, Clock, Loader2, Sparkles, XCircle, Tag } from 'lucide-react';
 import {
   formatBreedName,
   getModelDisplayName,
@@ -12,11 +12,17 @@ interface BatchComparisonTableProps {
   onSelectIndex: (index: number) => void;
 }
 
+function getEffectiveVerdict(p: PredictionResponse): string {
+  if (p.is_unknown_breed) return '__UNKNOWN__';
+  return p.predicted_breed?.name ?? '__UNKNOWN__';
+}
+
 export function BatchComparisonTable({
   predictions,
   selectedIndex,
   onSelectIndex,
 }: BatchComparisonTableProps) {
+  const batchNote = predictions.find((p) => p.note)?.note;
   const completedWithBreed = predictions.filter(
     (p) => p.status === 'COMPLETED' && Boolean(p.predicted_breed?.name),
   );
@@ -25,19 +31,19 @@ export function BatchComparisonTable({
   ).length;
   const failedCount = predictions.filter((p) => p.status === 'FAILED').length;
 
-  const breedCounts = new Map<string, number>();
+  const verdictCounts = new Map<string, number>();
   for (const item of completedWithBreed) {
-    const breed = item.predicted_breed!.name;
-    breedCounts.set(breed, (breedCounts.get(breed) ?? 0) + 1);
+    const verdict = getEffectiveVerdict(item);
+    verdictCounts.set(verdict, (verdictCounts.get(verdict) ?? 0) + 1);
   }
 
-  const sortedCounts = Array.from(breedCounts.entries()).sort((a, b) => b[1] - a[1]);
-  const topBreed = sortedCounts[0]?.[0] ?? null;
-  const topBreedCount = sortedCounts[0]?.[1] ?? 0;
+  const sortedCounts = Array.from(verdictCounts.entries()).sort((a, b) => b[1] - a[1]);
+  const topVerdict = sortedCounts[0]?.[0] ?? null;
+  const topVerdictCount = sortedCounts[0]?.[1] ?? 0;
   const hasMultipleCompleted = completedWithBreed.length > 1;
   const allCompletedAgree = hasMultipleCompleted && sortedCounts.length === 1;
   const hasAnyDisagreement = hasMultipleCompleted && sortedCounts.length > 1;
-  const consensusBreed = topBreedCount >= 2 ? topBreed : null;
+  const consensusVerdict = topVerdictCount >= 2 ? topVerdict : null;
 
   return (
     <div className="glass-card" style={{ padding: 18, minWidth: 0 }}>
@@ -63,7 +69,7 @@ export function BatchComparisonTable({
         </div>
 
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
-          {allCompletedAgree && topBreed && (
+          {allCompletedAgree && topVerdict && (
             <span
               style={{
                 display: 'inline-flex',
@@ -73,16 +79,18 @@ export function BatchComparisonTable({
                 borderRadius: 999,
                 fontSize: 11,
                 fontWeight: 700,
-                background: 'rgba(16,185,129,0.14)',
-                color: '#10b981',
-                border: '1px solid rgba(16,185,129,0.35)',
+                background: topVerdict === '__UNKNOWN__' ? 'rgba(245,158,11,0.14)' : 'rgba(16,185,129,0.14)',
+                color: topVerdict === '__UNKNOWN__' ? '#d97706' : '#10b981',
+                border: topVerdict === '__UNKNOWN__' ? '1px solid rgba(245,158,11,0.35)' : '1px solid rgba(16,185,129,0.35)',
               }}
             >
-              <CheckCircle2 size={12} />
-              Đồng thuận: {formatBreedName(topBreed)} ({topBreedCount}/{completedWithBreed.length})
+              {topVerdict === '__UNKNOWN__' ? <AlertTriangle size={12} /> : <CheckCircle2 size={12} />}
+              {topVerdict === '__UNKNOWN__'
+                ? `Chưa xác định (${topVerdictCount}/${completedWithBreed.length})`
+                : `Đồng thuận: ${formatBreedName(topVerdict)} (${topVerdictCount}/${completedWithBreed.length})`}
             </span>
           )}
-          {hasAnyDisagreement && topBreed && (
+          {hasAnyDisagreement && topVerdict && (
             <span
               style={{
                 display: 'inline-flex',
@@ -98,9 +106,11 @@ export function BatchComparisonTable({
               }}
             >
               <AlertTriangle size={12} />
-              {consensusBreed
-                ? `Đa số: ${formatBreedName(consensusBreed)} (${topBreedCount}/${completedWithBreed.length}) · Có bất đồng`
-                : 'Các mô hình đang bất đồng Top-1'}
+              {consensusVerdict
+                ? consensusVerdict === '__UNKNOWN__'
+                  ? `Chưa xác định (${topVerdictCount}/${completedWithBreed.length}) · Có phân hóa`
+                  : `Đa số: ${formatBreedName(consensusVerdict)} (${topVerdictCount}/${completedWithBreed.length}) · Có bất đồng`
+                : 'Các mô hình đang phân hóa Top-1'}
             </span>
           )}
           {failedCount > 0 && (
@@ -124,6 +134,26 @@ export function BatchComparisonTable({
           )}
         </div>
       </div>
+
+      {batchNote && (
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 6,
+            padding: '6px 12px',
+            marginBottom: 12,
+            borderRadius: 8,
+            background: 'rgba(139, 92, 246, 0.08)',
+            border: '1px solid rgba(139, 92, 246, 0.22)',
+            color: 'var(--color-text)',
+            fontSize: 12,
+          }}
+        >
+          <Tag size={13} color="var(--color-accent)" style={{ flexShrink: 0 }} />
+          <span>Nhãn thực tế của ảnh: <strong style={{ color: 'var(--color-accent)' }}>{batchNote}</strong></span>
+        </div>
+      )}
 
       <div style={{ width: '100%', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
         <table
@@ -149,7 +179,6 @@ export function BatchComparisonTable({
               <th style={{ padding: '8px 10px' }}>Top-1 dự đoán</th>
               <th style={{ padding: '8px 10px' }}>Tin cậy</th>
               <th style={{ padding: '8px 10px' }}>Thời gian</th>
-              <th style={{ padding: '8px 10px' }}>Đối chiếu</th>
             </tr>
           </thead>
           <tbody>
@@ -160,26 +189,11 @@ export function BatchComparisonTable({
               const isPending = p.status === 'UPLOADED' || p.status === 'PROCESSING';
               const isFailed = p.status === 'FAILED';
 
-              let agreementKind: 'agree' | 'disagree' | 'neutral' = 'neutral';
-              if (p.status === 'COMPLETED' && breedName && hasMultipleCompleted) {
-                if (allCompletedAgree) {
-                  agreementKind = 'agree';
-                } else if (consensusBreed && breedName === consensusBreed) {
-                  agreementKind = 'agree';
-                } else {
-                  agreementKind = 'disagree';
-                }
-              }
-
               const rowBg = isSelected
                 ? 'rgba(139,92,246,0.12)'
                 : isFailed
                   ? 'rgba(239,68,68,0.06)'
-                  : agreementKind === 'agree'
-                    ? 'rgba(16,185,129,0.06)'
-                    : agreementKind === 'disagree'
-                      ? 'rgba(245,158,11,0.08)'
-                      : 'transparent';
+                  : 'transparent';
 
               return (
                 <tr
@@ -224,6 +238,16 @@ export function BatchComparisonTable({
                       <span style={{ color: 'var(--color-error)', fontWeight: 600 }}>
                         Thất bại
                       </span>
+                    ) : p.is_unknown_breed ? (
+                      <div>
+                        <span style={{ color: '#d97706', display: 'inline-flex', alignItems: 'center', gap: 4, fontWeight: 700 }}>
+                          <AlertTriangle size={12} />
+                          Chưa xác định
+                        </span>
+                        <div style={{ fontSize: 11, color: 'var(--color-text-muted)', fontWeight: 400 }}>
+                          (Gần: {formatBreedName(breedName)})
+                        </div>
+                      </div>
                     ) : (
                       <span>{formatBreedName(breedName)}</span>
                     )}
@@ -243,50 +267,6 @@ export function BatchComparisonTable({
                       </span>
                     ) : (
                       '—'
-                    )}
-                  </td>
-
-                  <td style={{ padding: '10px', whiteSpace: 'nowrap' }}>
-                    {isPending ? (
-                      <span className="badge badge-processing" style={{ fontSize: 10, padding: '2px 8px' }}>
-                        Đang chạy
-                      </span>
-                    ) : isFailed ? (
-                      <span
-                        className="badge badge-failed"
-                        style={{ fontSize: 10, padding: '2px 8px' }}
-                        title={p.error_message ?? 'Mô hình gặp lỗi'}
-                      >
-                        Lỗi
-                      </span>
-                    ) : agreementKind === 'agree' ? (
-                      <span
-                        style={{
-                          padding: '2px 8px',
-                          borderRadius: 999,
-                          fontSize: 10,
-                          fontWeight: 700,
-                          background: 'rgba(16,185,129,0.16)',
-                          color: '#10b981',
-                        }}
-                      >
-                        Đồng thuận
-                      </span>
-                    ) : agreementKind === 'disagree' ? (
-                      <span
-                        style={{
-                          padding: '2px 8px',
-                          borderRadius: 999,
-                          fontSize: 10,
-                          fontWeight: 700,
-                          background: 'rgba(245,158,11,0.18)',
-                          color: '#d97706',
-                        }}
-                      >
-                        Bất đồng
-                      </span>
-                    ) : (
-                      <span style={{ fontSize: 11, color: 'var(--color-text-faint)' }}>Hoàn tất</span>
                     )}
                   </td>
                 </tr>

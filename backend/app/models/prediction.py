@@ -25,8 +25,40 @@ class Prediction(Base):
     method = Column(String, nullable=True)  # ModelMethod value: resnet18 | seresnet18 | densenet121 | efficientnet-b0 | dual-stream-efficientnet
     processing_time = Column(Float, nullable=True) # in seconds
     status = Column(Enum(PredictionStatus), default=PredictionStatus.UPLOADED, nullable=False)
+    note = Column(String, nullable=True)
     error_message = Column(Text, nullable=True)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
 
     predicted_breed = relationship("Breed", back_populates="predictions")
+
+    @property
+    def is_unknown_breed(self) -> bool:
+        if not self.top_k_results:
+            return False
+        for item in self.top_k_results:
+            if isinstance(item, dict) and "_unknown_assessment" in item:
+                return item["_unknown_assessment"].get("is_unknown", False)
+        return False
+
+    @property
+    def unknown_score(self) -> float:
+        if not self.top_k_results:
+            return 0.0
+        for item in self.top_k_results:
+            if isinstance(item, dict) and "_unknown_assessment" in item:
+                return float(item["_unknown_assessment"].get("unknown_score", 0.0))
+        return 0.0
+
+    @property
+    def breed_status(self) -> str:
+        return "unknown" if self.is_unknown_breed else "known"
+
+    @property
+    def unknown_assessment(self) -> dict | None:
+        if not self.top_k_results:
+            return None
+        for item in self.top_k_results:
+            if isinstance(item, dict) and "_unknown_assessment" in item:
+                return item["_unknown_assessment"]
+        return None
 

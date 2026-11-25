@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Union, List, Any
+from typing import Union, List, Any, Optional, Dict
 from pydantic import BaseModel
 from PIL.Image import Image as PILImage
 
@@ -16,6 +16,10 @@ class ClassifierResult(BaseModel):
     score: float
     top_k_results: List[PredictionResultItem]
     model_version: str
+    is_unknown_breed: bool = False
+    unknown_score: float = 0.0
+    breed_status: str = "known"
+    unknown_assessment: Optional[Dict[str, Any]] = None
 
 class Classifier(ABC):
     @abstractmethod

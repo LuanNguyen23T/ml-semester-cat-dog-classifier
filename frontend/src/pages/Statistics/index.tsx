@@ -9,10 +9,10 @@ import {
   Gauge,
   RefreshCw,
   X,
+  Trash2,
+  Loader2,
 } from 'lucide-react';
 import {
-  Area,
-  AreaChart,
   Bar,
   BarChart,
   CartesianGrid,
@@ -78,12 +78,6 @@ function formatDateTime(value: string): string {
   }).format(new Date(value));
 }
 
-function formatShortDate(value: string): string {
-  const [year, month, day] = value.split('-').map(Number);
-  return new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric' })
-    .format(new Date(year, month - 1, day));
-}
-
 function displayMethod(method: string | null, modelNames: Map<string, string>): string {
   if (!method) return 'Legacy record';
   return getModelDisplayName(method, modelNames);
@@ -102,9 +96,26 @@ interface PredictionDetailProps {
   prediction: PredictionResponse;
   modelName: string;
   onClose: () => void;
+  onDeleted?: (id: string) => void;
 }
 
-function PredictionDetail({ prediction, modelName, onClose }: PredictionDetailProps) {
+function PredictionDetail({ prediction, modelName, onClose, onDeleted }: PredictionDetailProps) {
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+
+  const handleDelete = async () => {
+    setIsDeleting(true);
+    setDeleteError(null);
+    try {
+      await predictionApi.deletePrediction(prediction.id, true);
+      onDeleted?.(prediction.id);
+    } catch (err: unknown) {
+      setDeleteError(formatApiError(err, 'Xóa thất bại. Vui lòng thử lại.'));
+      setIsDeleting(false);
+    }
+  };
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') onClose();
@@ -125,12 +136,83 @@ function PredictionDetail({ prediction, modelName, onClose }: PredictionDetailPr
         <header className="statistics-modal-header">
           <div>
             <span className="statistics-eyebrow">Prediction details</span>
-            <h2 id="prediction-detail-title">{prediction.predicted_breed?.name ?? 'Pending result'}</h2>
+            <h2 id="prediction-detail-title" style={{ color: prediction.is_unknown_breed ? '#f59e0b' : 'inherit' }}>
+              {prediction.is_unknown_breed ? 'Chưa xác định' : (prediction.predicted_breed?.name ? formatBreedName(prediction.predicted_breed.name) : 'Pending result')}
+            </h2>
           </div>
-          <button className="statistics-icon-button" onClick={onClose} aria-label="Close details">
-            <X size={19} />
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            {confirmDelete ? (
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 6,
+                  background: 'rgba(239,68,68,0.1)',
+                  padding: '4px 8px',
+                  borderRadius: 8,
+                  border: '1px solid rgba(239,68,68,0.3)',
+                }}
+              >
+                <span style={{ fontSize: 12, color: 'var(--color-error)', fontWeight: 600 }}>Xác nhận xóa?</span>
+                <button
+                  className="btn btn-ghost"
+                  onClick={handleDelete}
+                  disabled={isDeleting}
+                  style={{
+                    padding: '4px 10px',
+                    fontSize: 12,
+                    borderRadius: 6,
+                    background: 'var(--color-error)',
+                    color: '#ffffff',
+                    fontWeight: 700,
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 4,
+                  }}
+                >
+                  {isDeleting ? <Loader2 size={12} className="animate-spin" /> : 'Xóa'}
+                </button>
+                <button
+                  className="btn btn-ghost"
+                  onClick={() => setConfirmDelete(false)}
+                  disabled={isDeleting}
+                  style={{ padding: '4px 8px', fontSize: 12, borderRadius: 6 }}
+                >
+                  Hủy
+                </button>
+              </div>
+            ) : (
+              <button
+                className="btn btn-ghost"
+                onClick={() => setConfirmDelete(true)}
+                style={{
+                  padding: '6px 12px',
+                  fontSize: 12,
+                  borderRadius: 8,
+                  color: 'var(--color-error)',
+                  border: '1px solid rgba(239,68,68,0.25)',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 6,
+                  fontWeight: 600,
+                }}
+                title="Xóa mẫu này"
+              >
+                <Trash2 size={14} />
+                Xóa
+              </button>
+            )}
+            <button className="statistics-icon-button" onClick={onClose} aria-label="Close details">
+              <X size={19} />
+            </button>
+          </div>
         </header>
+
+        {deleteError && (
+          <div style={{ padding: '8px 16px', color: 'var(--color-error)', fontSize: 13, fontWeight: 600 }}>
+            ⚠ {deleteError}
+          </div>
+        )}
 
         <div className="statistics-modal-content">
           <img src={prediction.image_key} alt="Classified pet" className="statistics-detail-image" />
@@ -138,20 +220,23 @@ function PredictionDetail({ prediction, modelName, onClose }: PredictionDetailPr
             <div><dt>Status</dt><dd><span className={`badge badge-${prediction.status.toLowerCase()}`}>{prediction.status}</span></dd></div>
             <div><dt>Model</dt><dd>{modelName}</dd></div>
             <div><dt>TTA Mode</dt><dd>{hasTtaEnabled(prediction.model_version) ? 'Bật (4-View)' : 'Tắt'}</dd></div>
-            <div><dt>Species</dt><dd>{prediction.predicted_breed?.species.name ?? 'Not available'}</dd></div>
+            <div><dt>Species</dt><dd>{prediction.is_unknown_breed ? 'Không xác định' : (prediction.predicted_breed?.species.name ?? 'Not available')}</dd></div>
             <div><dt>Confidence</dt><dd>{formatPercent(prediction.score)}</dd></div>
             <div><dt>Processing time</dt><dd>{formatDuration(prediction.processing_time)}</dd></div>
             <div><dt>Created</dt><dd>{formatDateTime(prediction.created_at)}</dd></div>
+            {prediction.is_unknown_breed && (
+              <div><dt>OOD Alert</dt><dd style={{ color: '#f59e0b', fontWeight: 700 }}>Chưa xác định</dd></div>
+            )}
           </dl>
         </div>
 
         {prediction.top_k_results && prediction.top_k_results.length > 0 && (
           <div className="statistics-ranked-results">
-            <h3>Top predictions</h3>
-            {prediction.top_k_results.slice(0, 5).map((result, index) => (
+            <h3>Top predictions {prediction.is_unknown_breed && <small style={{ color: 'var(--color-text-muted)', fontSize: 12, fontWeight: 400 }}>(Tương đồng gần nhất)</small>}</h3>
+            {prediction.top_k_results.filter(r => r && r.breed_name).slice(0, 5).map((result, index) => (
               <div className="statistics-ranked-row" key={`${result.breed_id}-${index}`}>
                 <span>{index + 1}</span>
-                <strong>{result.breed_name}</strong>
+                <strong>{formatBreedName(result.breed_name)}</strong>
                 <div><i style={{ width: `${Math.max(2, result.score * 100)}%` }} /></div>
                 <b>{(result.score * 100).toFixed(1)}%</b>
               </div>
@@ -230,7 +315,6 @@ export function StatisticsPage() {
     boxShadow: 'var(--shadow-md)',
   };
 
-  const hasDailyData = data?.daily.some((item) => item.total > 0) ?? false;
   const hasSpeciesData = (data?.by_species.length ?? 0) > 0;
   const hasBreedSpeciesData = (data?.by_breed_species.length ?? 0) > 0;
   const hasBreedData = (data?.top_breeds.length ?? 0) > 0;
@@ -317,30 +401,6 @@ export function StatisticsPage() {
 
           <section className="statistics-chart-grid">
             <article className="statistics-panel statistics-panel-wide">
-              <div className="statistics-panel-heading"><div><h2>Model-run activity</h2><p>Daily inference volume and outcomes</p></div></div>
-              <div className="statistics-chart">
-                {!hasDailyData ? <ChartEmptyState /> : (
-                  <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={data.daily} margin={{ top: 10, right: 8, left: -20, bottom: 0 }}>
-                      <defs>
-                        <linearGradient id="totalArea" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="#2563eb" stopOpacity={0.28} /><stop offset="95%" stopColor="#2563eb" stopOpacity={0} /></linearGradient>
-                        <linearGradient id="completedArea" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="#10b981" stopOpacity={0.22} /><stop offset="95%" stopColor="#10b981" stopOpacity={0} /></linearGradient>
-                      </defs>
-                      <CartesianGrid stroke="var(--color-border)" strokeDasharray="3 3" vertical={false} />
-                      <XAxis dataKey="date" tickFormatter={formatShortDate} tick={{ fill: 'var(--color-text-muted)', fontSize: 11 }} axisLine={false} tickLine={false} minTickGap={28} />
-                      <YAxis allowDecimals={false} tick={{ fill: 'var(--color-text-muted)', fontSize: 11 }} axisLine={false} tickLine={false} />
-                      <Tooltip contentStyle={tooltipStyle} labelFormatter={(label) => formatShortDate(String(label))} />
-                      <Legend iconType="circle" wrapperStyle={{ fontSize: 12 }} />
-                      <Area type="monotone" dataKey="total" name="Total" stroke="#2563eb" strokeWidth={2} fill="url(#totalArea)" />
-                      <Area type="monotone" dataKey="completed" name="Completed" stroke="#10b981" strokeWidth={2} fill="url(#completedArea)" />
-                      <Area type="monotone" dataKey="failed" name="Failed" stroke="#ef4444" strokeWidth={2} fill="none" />
-                    </AreaChart>
-                  </ResponsiveContainer>
-                )}
-              </div>
-            </article>
-
-            <article className="statistics-panel statistics-panel-wide">
               <div className="statistics-panel-heading"><div><h2>Species distribution</h2><p>Completed model outputs by species</p></div></div>
               <div className="statistics-species-layout">
                 <div className="statistics-chart statistics-species-total">
@@ -359,7 +419,6 @@ export function StatisticsPage() {
                 <div className="statistics-species-breakdown">
                   <div className="statistics-breakdown-heading">
                     <h3>Breed breakdown</h3>
-                    <div><span className="cat-key" />Cat <span className="dog-key" />Dog</div>
                   </div>
                   <div className="statistics-breakdown-scroll">
                   <div className="statistics-breakdown-chart" style={{ height: Math.max(310, data.by_breed_species.length * 27) }}>
@@ -449,7 +508,18 @@ export function StatisticsPage() {
                           {displayMethod(prediction.method, modelNames)}
                           {hasTtaEnabled(prediction.model_version) && <small>TTA: Bật</small>}
                         </td>
-                        <td><strong>{prediction.predicted_breed ? formatBreedName(prediction.predicted_breed.name) : 'Pending'}</strong><small>{prediction.predicted_breed?.species.name ?? ''}</small></td>
+                        <td>
+                          {prediction.is_unknown_breed ? (
+                            <strong style={{ color: '#f59e0b' }}>Chưa xác định</strong>
+                          ) : (
+                            <strong>{prediction.predicted_breed ? formatBreedName(prediction.predicted_breed.name) : 'Pending'}</strong>
+                          )}
+                          <small>
+                            {prediction.is_unknown_breed
+                              ? `(Gần: ${prediction.predicted_breed ? formatBreedName(prediction.predicted_breed.name) : '-'})`
+                              : (prediction.predicted_breed?.species.name ?? '')}
+                          </small>
+                        </td>
                         <td>{formatPercent(prediction.score)}</td>
                         <td>{formatDuration(prediction.processing_time)}</td>
                         <td><span className={`badge badge-${prediction.status.toLowerCase()}`}>{prediction.status}</span></td>
@@ -475,6 +545,10 @@ export function StatisticsPage() {
           prediction={selectedPrediction}
           modelName={displayMethod(selectedPrediction.method, modelNames)}
           onClose={() => setSelectedPrediction(null)}
+          onDeleted={() => {
+            setSelectedPrediction(null);
+            fetchStatistics();
+          }}
         />
       )}
     </div>

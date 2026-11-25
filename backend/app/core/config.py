@@ -27,6 +27,10 @@ class Settings(BaseSettings):
     @property
     def SQLALCHEMY_DATABASE_URI(self) -> str:
         if self.DATABASE_URL:
+            if self.DATABASE_URL.startswith("sqlite:///."):
+                backend_dir = Path(__file__).resolve().parent.parent.parent
+                db_name = self.DATABASE_URL.replace("sqlite:///./", "")
+                return f"sqlite:///{backend_dir / db_name}"
             return self.DATABASE_URL
         return f"postgresql://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_SERVER}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
 

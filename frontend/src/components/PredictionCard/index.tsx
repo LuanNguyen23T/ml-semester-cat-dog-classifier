@@ -1,4 +1,4 @@
-import { CheckCircle, Clock, XCircle, Loader2, Cat, Dog, Sparkles } from 'lucide-react';
+import { CheckCircle, Clock, XCircle, Loader2, Cat, Dog, Sparkles, AlertTriangle, Tag } from 'lucide-react';
 import {
   formatBreedName,
   getModelDisplayName,
@@ -29,11 +29,13 @@ export function PredictionCard({ prediction, onClick, batchSize = 1, batchResult
   const { status, predicted_breed, score, created_at } = prediction;
   const cfg = STATUS_CONFIG[status] ?? STATUS_CONFIG.UPLOADED;
   const isBatch = batchSize > 1;
+  const isUnknown = Boolean(prediction.is_unknown_breed);
   const breedName = predicted_breed?.name ? formatBreedName(predicted_breed.name) : '-';
   const speciesName = predicted_breed?.species?.name ?? '';
   const hasTta = isBatch
     ? batchResults.some((item) => hasTtaEnabled(item.model_version))
     : hasTtaEnabled(prediction.model_version);
+  const displayNote = prediction.note || batchResults.find((b) => b.note)?.note;
 
   const batchBreeds = Array.from(
     batchResults
@@ -96,28 +98,77 @@ export function PredictionCard({ prediction, onClick, batchSize = 1, batchResult
             No Image
           </div>
         )}
-        <div
-          style={{
-            position: 'absolute',
-            top: 12,
-            right: 12,
-            background: 'rgba(255,255,255,0.92)',
-            backdropFilter: 'blur(4px)',
-            padding: '4px 10px',
-            borderRadius: 999,
-            display: 'flex',
-            alignItems: 'center',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-          }}
-        >
-          <span
-            className={cfg.className}
-            style={{ margin: 0, padding: 0, background: 'transparent', color: '#0f172a' }}
+          <div
+            style={{
+              position: 'absolute',
+              top: 12,
+              right: 12,
+              background: isUnknown
+                ? 'rgba(254, 243, 199, 0.95)'
+                : status === 'COMPLETED'
+                ? 'rgba(236, 253, 245, 0.95)'
+                : 'rgba(255,255,255,0.92)',
+              border: isUnknown
+                ? '1px solid rgba(245, 158, 11, 0.35)'
+                : status === 'COMPLETED'
+                ? '1px solid rgba(16, 185, 129, 0.35)'
+                : '1px solid var(--color-border)',
+              backdropFilter: 'blur(4px)',
+              padding: '4px 10px',
+              borderRadius: 999,
+              display: 'flex',
+              alignItems: 'center',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+            }}
           >
-            {cfg.icon}
-            <span style={{ marginLeft: 4, fontWeight: 700, fontSize: 11 }}>{cfg.label}</span>
-          </span>
-        </div>
+            {isUnknown ? (
+              <span
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 4,
+                  fontSize: 11,
+                  fontWeight: 700,
+                  color: '#d97706',
+                  textTransform: 'none',
+                }}
+              >
+                <AlertTriangle size={12} color="#d97706" />
+                Chưa xác định
+              </span>
+            ) : status === 'COMPLETED' ? (
+              <span
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 4,
+                  fontSize: 11,
+                  fontWeight: 700,
+                  color: '#059669',
+                  textTransform: 'none',
+                }}
+              >
+                <CheckCircle size={12} color="#059669" />
+                Completed
+              </span>
+            ) : (
+              <span
+                className={cfg.className}
+                style={{
+                  margin: 0,
+                  padding: 0,
+                  background: 'transparent',
+                  border: 'none',
+                  textTransform: 'none',
+                  fontSize: 11,
+                  fontWeight: 700,
+                }}
+              >
+                {cfg.icon}
+                <span style={{ marginLeft: 4 }}>{cfg.label}</span>
+              </span>
+            )}
+          </div>
       </div>
 
       <div style={{ padding: 20, display: 'flex', flexDirection: 'column', gap: 12, minWidth: 0 }}>
@@ -182,6 +233,32 @@ export function PredictionCard({ prediction, onClick, batchSize = 1, batchResult
           </span>
         </div>
 
+        {/* Note / Ground Truth */}
+        {displayNote && (
+          <div
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 5,
+              padding: '3px 8px',
+              borderRadius: 6,
+              background: 'rgba(139, 92, 246, 0.08)',
+              border: '1px solid rgba(139, 92, 246, 0.22)',
+              color: 'var(--color-accent)',
+              fontSize: 11,
+              fontWeight: 600,
+              maxWidth: '100%',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}
+            title={displayNote}
+          >
+            <Tag size={11} style={{ flexShrink: 0 }} />
+            <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{displayNote}</span>
+          </div>
+        )}
+
         {/* Breed */}
         {isBatch ? (
           <div style={{ display: 'grid', gap: 7 }}>
@@ -228,20 +305,26 @@ export function PredictionCard({ prediction, onClick, batchSize = 1, batchResult
         ) : (
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              {speciesName === 'Cat' ? (
+              {isUnknown ? (
+                <AlertTriangle size={16} color="#d97706" />
+              ) : speciesName === 'Cat' ? (
                 <Cat size={16} color="var(--color-accent)" />
               ) : speciesName === 'Dog' ? (
                 <Dog size={16} color="#6366f1" />
               ) : null}
-              <span style={{ fontSize: 16, fontWeight: 700, color: 'var(--color-text)' }}>
-                {breedName}
+              <span
+                style={{
+                  fontSize: 16,
+                  fontWeight: 700,
+                  color: isUnknown ? '#d97706' : 'var(--color-text)',
+                }}
+              >
+                {isUnknown ? 'Chưa xác định' : breedName}
               </span>
             </div>
-            {speciesName && (
-              <span style={{ fontSize: 12, color: 'var(--color-text-muted)', marginLeft: 24 }}>
-                {speciesName}
-              </span>
-            )}
+            <span style={{ fontSize: 12, color: 'var(--color-text-muted)', marginLeft: 24 }}>
+              {isUnknown ? `(Gần: ${breedName})` : speciesName}
+            </span>
           </div>
         )}
 

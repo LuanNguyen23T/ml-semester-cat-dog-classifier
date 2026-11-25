@@ -1,0 +1,585 @@
+{
+  "dataset": "Stanford Dogs (ALL split, Zero-Shot Cross-Dataset Domain Transfer)",
+  "split": "all",
+  "num_overlapping_breeds": 21,
+  "total_test_samples": 3730,
+  "mode": "Single-View (Raw)",
+  "device": "mps",
+  "models": {
+    "resnet18": {
+      "name": "ResNet-18",
+      "top1_acc": 65.17,
+      "top5_acc": 89.57,
+      "oxford_baseline_acc": 67.84,
+      "delta_drop": 2.67,
+      "mean_latency_ms": 7.04,
+      "per_breed": {
+        "Basset Hound": {
+          "correct": 80,
+          "total": 175,
+          "accuracy": 45.71
+        },
+        "Beagle": {
+          "correct": 135,
+          "total": 195,
+          "accuracy": 69.23
+        },
+        "Boxer": {
+          "correct": 95,
+          "total": 151,
+          "accuracy": 62.91
+        },
+        "Chihuahua": {
+          "correct": 56,
+          "total": 152,
+          "accuracy": 36.84
+        },
+        "English Cocker Spaniel": {
+          "correct": 68,
+          "total": 159,
+          "accuracy": 42.77
+        },
+        "English Setter": {
+          "correct": 92,
+          "total": 161,
+          "accuracy": 57.14
+        },
+        "German Shorthaired": {
+          "correct": 108,
+          "total": 152,
+          "accuracy": 71.05
+        },
+        "Great Pyrenees": {
+          "correct": 125,
+          "total": 213,
+          "accuracy": 58.69
+        },
+        "Japanese Chin": {
+          "correct": 142,
+          "total": 185,
+          "accuracy": 76.76
+        },
+        "Keeshond": {
+          "correct": 126,
+          "total": 158,
+          "accuracy": 79.75
+        },
+        "Leonberger": {
+          "correct": 154,
+          "total": 210,
+          "accuracy": 73.33
+        },
+        "Miniature Pinscher": {
+          "correct": 141,
+          "total": 184,
+          "accuracy": 76.63
+        },
+        "Newfoundland": {
+          "correct": 71,
+          "total": 195,
+          "accuracy": 36.41
+        },
+        "Pomeranian": {
+          "correct": 163,
+          "total": 219,
+          "accuracy": 74.43
+        },
+        "Pug": {
+          "correct": 99,
+          "total": 200,
+          "accuracy": 49.5
+        },
+        "Saint Bernard": {
+          "correct": 155,
+          "total": 170,
+          "accuracy": 91.18
+        },
+        "Samoyed": {
+          "correct": 149,
+          "total": 218,
+          "accuracy": 68.35
+        },
+        "Scottish Terrier": {
+          "correct": 138,
+          "total": 158,
+          "accuracy": 87.34
+        },
+        "Staffordshire Bull Terrier": {
+          "correct": 75,
+          "total": 155,
+          "accuracy": 48.39
+        },
+        "Wheaten Terrier": {
+          "correct": 121,
+          "total": 156,
+          "accuracy": 77.56
+        },
+        "Yorkshire Terrier": {
+          "correct": 138,
+          "total": 164,
+          "accuracy": 84.15
+        }
+      }
+    },
+    "seresnet18": {
+      "name": "SEResNet-18",
+      "top1_acc": 63.49,
+      "top5_acc": 87.88,
+      "oxford_baseline_acc": 70.62,
+      "delta_drop": 7.13,
+      "mean_latency_ms": 7.29,
+      "per_breed": {
+        "Basset Hound": {
+          "correct": 78,
+          "total": 175,
+          "accuracy": 44.57
+        },
+        "Beagle": {
+          "correct": 138,
+          "total": 195,
+          "accuracy": 70.77
+        },
+        "Boxer": {
+          "correct": 94,
+          "total": 151,
+          "accuracy": 62.25
+        },
+        "Chihuahua": {
+          "correct": 40,
+          "total": 152,
+          "accuracy": 26.32
+        },
+        "English Cocker Spaniel": {
+          "correct": 64,
+          "total": 159,
+          "accuracy": 40.25
+        },
+        "English Setter": {
+          "correct": 97,
+          "total": 161,
+          "accuracy": 60.25
+        },
+        "German Shorthaired": {
+          "correct": 98,
+          "total": 152,
+          "accuracy": 64.47
+        },
+        "Great Pyrenees": {
+          "correct": 92,
+          "total": 213,
+          "accuracy": 43.19
+        },
+        "Japanese Chin": {
+          "correct": 141,
+          "total": 185,
+          "accuracy": 76.22
+        },
+        "Keeshond": {
+          "correct": 131,
+          "total": 158,
+          "accuracy": 82.91
+        },
+        "Leonberger": {
+          "correct": 155,
+          "total": 210,
+          "accuracy": 73.81
+        },
+        "Miniature Pinscher": {
+          "correct": 127,
+          "total": 184,
+          "accuracy": 69.02
+        },
+        "Newfoundland": {
+          "correct": 67,
+          "total": 195,
+          "accuracy": 34.36
+        },
+        "Pomeranian": {
+          "correct": 164,
+          "total": 219,
+          "accuracy": 74.89
+        },
+        "Pug": {
+          "correct": 111,
+          "total": 200,
+          "accuracy": 55.5
+        },
+        "Saint Bernard": {
+          "correct": 154,
+          "total": 170,
+          "accuracy": 90.59
+        },
+        "Samoyed": {
+          "correct": 160,
+          "total": 218,
+          "accuracy": 73.39
+        },
+        "Scottish Terrier": {
+          "correct": 135,
+          "total": 158,
+          "accuracy": 85.44
+        },
+        "Staffordshire Bull Terrier": {
+          "correct": 52,
+          "total": 155,
+          "accuracy": 33.55
+        },
+        "Wheaten Terrier": {
+          "correct": 128,
+          "total": 156,
+          "accuracy": 82.05
+        },
+        "Yorkshire Terrier": {
+          "correct": 142,
+          "total": 164,
+          "accuracy": 86.59
+        }
+      }
+    },
+    "densenet121": {
+      "name": "DenseNet-121",
+      "top1_acc": 71.47,
+      "top5_acc": 91.9,
+      "oxford_baseline_acc": 74.54,
+      "delta_drop": 3.07,
+      "mean_latency_ms": 21.82,
+      "per_breed": {
+        "Basset Hound": {
+          "correct": 94,
+          "total": 175,
+          "accuracy": 53.71
+        },
+        "Beagle": {
+          "correct": 146,
+          "total": 195,
+          "accuracy": 74.87
+        },
+        "Boxer": {
+          "correct": 94,
+          "total": 151,
+          "accuracy": 62.25
+        },
+        "Chihuahua": {
+          "correct": 64,
+          "total": 152,
+          "accuracy": 42.11
+        },
+        "English Cocker Spaniel": {
+          "correct": 89,
+          "total": 159,
+          "accuracy": 55.97
+        },
+        "English Setter": {
+          "correct": 113,
+          "total": 161,
+          "accuracy": 70.19
+        },
+        "German Shorthaired": {
+          "correct": 114,
+          "total": 152,
+          "accuracy": 75.0
+        },
+        "Great Pyrenees": {
+          "correct": 134,
+          "total": 213,
+          "accuracy": 62.91
+        },
+        "Japanese Chin": {
+          "correct": 148,
+          "total": 185,
+          "accuracy": 80.0
+        },
+        "Keeshond": {
+          "correct": 140,
+          "total": 158,
+          "accuracy": 88.61
+        },
+        "Leonberger": {
+          "correct": 157,
+          "total": 210,
+          "accuracy": 74.76
+        },
+        "Miniature Pinscher": {
+          "correct": 159,
+          "total": 184,
+          "accuracy": 86.41
+        },
+        "Newfoundland": {
+          "correct": 91,
+          "total": 195,
+          "accuracy": 46.67
+        },
+        "Pomeranian": {
+          "correct": 170,
+          "total": 219,
+          "accuracy": 77.63
+        },
+        "Pug": {
+          "correct": 124,
+          "total": 200,
+          "accuracy": 62.0
+        },
+        "Saint Bernard": {
+          "correct": 160,
+          "total": 170,
+          "accuracy": 94.12
+        },
+        "Samoyed": {
+          "correct": 167,
+          "total": 218,
+          "accuracy": 76.61
+        },
+        "Scottish Terrier": {
+          "correct": 145,
+          "total": 158,
+          "accuracy": 91.77
+        },
+        "Staffordshire Bull Terrier": {
+          "correct": 73,
+          "total": 155,
+          "accuracy": 47.1
+        },
+        "Wheaten Terrier": {
+          "correct": 131,
+          "total": 156,
+          "accuracy": 83.97
+        },
+        "Yorkshire Terrier": {
+          "correct": 153,
+          "total": 164,
+          "accuracy": 93.29
+        }
+      }
+    },
+    "efficientnet-b0": {
+      "name": "EfficientNet-B0",
+      "top1_acc": 77.51,
+      "top5_acc": 94.16,
+      "oxford_baseline_acc": 83.32,
+      "delta_drop": 5.81,
+      "mean_latency_ms": 11.74,
+      "per_breed": {
+        "Basset Hound": {
+          "correct": 114,
+          "total": 175,
+          "accuracy": 65.14
+        },
+        "Beagle": {
+          "correct": 164,
+          "total": 195,
+          "accuracy": 84.1
+        },
+        "Boxer": {
+          "correct": 109,
+          "total": 151,
+          "accuracy": 72.19
+        },
+        "Chihuahua": {
+          "correct": 69,
+          "total": 152,
+          "accuracy": 45.39
+        },
+        "English Cocker Spaniel": {
+          "correct": 117,
+          "total": 159,
+          "accuracy": 73.58
+        },
+        "English Setter": {
+          "correct": 127,
+          "total": 161,
+          "accuracy": 78.88
+        },
+        "German Shorthaired": {
+          "correct": 127,
+          "total": 152,
+          "accuracy": 83.55
+        },
+        "Great Pyrenees": {
+          "correct": 147,
+          "total": 213,
+          "accuracy": 69.01
+        },
+        "Japanese Chin": {
+          "correct": 156,
+          "total": 185,
+          "accuracy": 84.32
+        },
+        "Keeshond": {
+          "correct": 149,
+          "total": 158,
+          "accuracy": 94.3
+        },
+        "Leonberger": {
+          "correct": 175,
+          "total": 210,
+          "accuracy": 83.33
+        },
+        "Miniature Pinscher": {
+          "correct": 159,
+          "total": 184,
+          "accuracy": 86.41
+        },
+        "Newfoundland": {
+          "correct": 119,
+          "total": 195,
+          "accuracy": 61.03
+        },
+        "Pomeranian": {
+          "correct": 183,
+          "total": 219,
+          "accuracy": 83.56
+        },
+        "Pug": {
+          "correct": 137,
+          "total": 200,
+          "accuracy": 68.5
+        },
+        "Saint Bernard": {
+          "correct": 163,
+          "total": 170,
+          "accuracy": 95.88
+        },
+        "Samoyed": {
+          "correct": 154,
+          "total": 218,
+          "accuracy": 70.64
+        },
+        "Scottish Terrier": {
+          "correct": 145,
+          "total": 158,
+          "accuracy": 91.77
+        },
+        "Staffordshire Bull Terrier": {
+          "correct": 92,
+          "total": 155,
+          "accuracy": 59.35
+        },
+        "Wheaten Terrier": {
+          "correct": 138,
+          "total": 156,
+          "accuracy": 88.46
+        },
+        "Yorkshire Terrier": {
+          "correct": 147,
+          "total": 164,
+          "accuracy": 89.63
+        }
+      }
+    },
+    "dual-stream-efficientnet": {
+      "name": "Dual-Stream EfficientNet-B0",
+      "top1_acc": 85.74,
+      "top5_acc": 96.54,
+      "oxford_baseline_acc": 85.72,
+      "delta_drop": -0.02,
+      "mean_latency_ms": 21.96,
+      "per_breed": {
+        "Basset Hound": {
+          "correct": 135,
+          "total": 175,
+          "accuracy": 77.14
+        },
+        "Beagle": {
+          "correct": 173,
+          "total": 195,
+          "accuracy": 88.72
+        },
+        "Boxer": {
+          "correct": 120,
+          "total": 151,
+          "accuracy": 79.47
+        },
+        "Chihuahua": {
+          "correct": 106,
+          "total": 152,
+          "accuracy": 69.74
+        },
+        "English Cocker Spaniel": {
+          "correct": 143,
+          "total": 159,
+          "accuracy": 89.94
+        },
+        "English Setter": {
+          "correct": 151,
+          "total": 161,
+          "accuracy": 93.79
+        },
+        "German Shorthaired": {
+          "correct": 142,
+          "total": 152,
+          "accuracy": 93.42
+        },
+        "Great Pyrenees": {
+          "correct": 166,
+          "total": 213,
+          "accuracy": 77.93
+        },
+        "Japanese Chin": {
+          "correct": 176,
+          "total": 185,
+          "accuracy": 95.14
+        },
+        "Keeshond": {
+          "correct": 153,
+          "total": 158,
+          "accuracy": 96.84
+        },
+        "Leonberger": {
+          "correct": 179,
+          "total": 210,
+          "accuracy": 85.24
+        },
+        "Miniature Pinscher": {
+          "correct": 170,
+          "total": 184,
+          "accuracy": 92.39
+        },
+        "Newfoundland": {
+          "correct": 131,
+          "total": 195,
+          "accuracy": 67.18
+        },
+        "Pomeranian": {
+          "correct": 180,
+          "total": 219,
+          "accuracy": 82.19
+        },
+        "Pug": {
+          "correct": 146,
+          "total": 200,
+          "accuracy": 73.0
+        },
+        "Saint Bernard": {
+          "correct": 164,
+          "total": 170,
+          "accuracy": 96.47
+        },
+        "Samoyed": {
+          "correct": 188,
+          "total": 218,
+          "accuracy": 86.24
+        },
+        "Scottish Terrier": {
+          "correct": 151,
+          "total": 158,
+          "accuracy": 95.57
+        },
+        "Staffordshire Bull Terrier": {
+          "correct": 118,
+          "total": 155,
+          "accuracy": 76.13
+        },
+        "Wheaten Terrier": {
+          "correct": 149,
+          "total": 156,
+          "accuracy": 95.51
+        },
+        "Yorkshire Terrier": {
+          "correct": 157,
+          "total": 164,
+          "accuracy": 95.73
+        }
+      }
+    }
+  }
+}

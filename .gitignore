@@ -31,6 +31,7 @@ dist/
 uploads/
 */uploads/
 tmp_samples/
+demo_samples/
 
 # IDE & Editor configs
 .vscode/

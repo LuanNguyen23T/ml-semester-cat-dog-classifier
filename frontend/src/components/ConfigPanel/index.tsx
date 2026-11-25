@@ -8,7 +8,7 @@ import {
   type SingleModelMethod,
 } from '../../types/prediction';
 import { predictionApi } from '../../services/predictionApi';
-import { Cpu, Sparkles, ImageIcon, Layers, Star } from 'lucide-react';
+import { Cpu, Sparkles, ImageIcon, Layers, Star, Tag } from 'lucide-react';
 
 interface ConfigPanelProps {
   selectedMethod: ModelMethod;
@@ -16,6 +16,8 @@ interface ConfigPanelProps {
   useTta: boolean;
   onToggleTta: (enabled: boolean) => void;
   onClassify: () => void;
+  note?: string;
+  onNoteChange?: (note: string) => void;
 }
 
 function ModelOptionCard({
@@ -130,6 +132,8 @@ export const ConfigPanel: React.FC<ConfigPanelProps> = ({
   useTta,
   onToggleTta,
   onClassify,
+  note = '',
+  onNoteChange,
 }) => {
   const [models, setModels] = useState<ModelInfo[]>(FALLBACK_MODELS);
   const [lastSingleMethod, setLastSingleMethod] = useState<SingleModelMethod>(DEFAULT_MODEL_METHOD);
@@ -214,22 +218,46 @@ export const ConfigPanel: React.FC<ConfigPanelProps> = ({
             <button
               type="button"
               onClick={() => onSelectMethod(ensureAvailableSingleMethod())}
-              className={`flex-1 px-4 py-3 border-2 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-all ${
-                selectedMethod !== 'all'
-                  ? 'bg-indigo-50 dark:bg-indigo-900/20 border-indigo-500 text-indigo-700 dark:text-indigo-300'
-                  : 'bg-slate-50 dark:bg-slate-800/50 border-transparent text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'
-              }`}
+              style={{
+                flex: 1,
+                padding: '12px 16px',
+                borderRadius: 12,
+                fontWeight: 700,
+                fontSize: 14,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 8,
+                cursor: 'pointer',
+                transition: 'all 0.18s ease',
+                background: selectedMethod !== 'all' ? 'rgba(139, 92, 246, 0.12)' : '#ffffff',
+                border: selectedMethod !== 'all' ? '2px solid var(--color-accent)' : '1px solid var(--color-border)',
+                color: selectedMethod !== 'all' ? 'var(--color-accent)' : 'var(--color-text-muted)',
+                boxShadow: selectedMethod !== 'all' ? '0 2px 10px rgba(139, 92, 246, 0.16)' : '0 1px 3px rgba(0,0,0,0.04)',
+              }}
             >
               <Cpu size={16} /> Single Model
             </button>
             <button
               type="button"
               onClick={() => onSelectMethod('all')}
-              className={`flex-1 px-4 py-3 border-2 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-all ${
-                selectedMethod === 'all'
-                  ? 'bg-indigo-50 dark:bg-indigo-900/20 border-indigo-500 text-indigo-700 dark:text-indigo-300'
-                  : 'bg-slate-50 dark:bg-slate-800/50 border-transparent text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'
-              }`}
+              style={{
+                flex: 1,
+                padding: '12px 16px',
+                borderRadius: 12,
+                fontWeight: 700,
+                fontSize: 14,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 8,
+                cursor: 'pointer',
+                transition: 'all 0.18s ease',
+                background: selectedMethod === 'all' ? 'rgba(139, 92, 246, 0.12)' : '#ffffff',
+                border: selectedMethod === 'all' ? '2px solid var(--color-accent)' : '1px solid var(--color-border)',
+                color: selectedMethod === 'all' ? 'var(--color-accent)' : 'var(--color-text-muted)',
+                boxShadow: selectedMethod === 'all' ? '0 2px 10px rgba(139, 92, 246, 0.16)' : '0 1px 3px rgba(0,0,0,0.04)',
+              }}
             >
               <Layers size={16} /> All Models
             </button>
@@ -363,6 +391,53 @@ export const ConfigPanel: React.FC<ConfigPanelProps> = ({
               }}
             />
           </button>
+        </div>
+      </div>
+
+      {/* Ghi chú / Nhãn ảnh */}
+      <div
+        style={{
+          marginTop: 14,
+          padding: 14,
+          background: 'var(--color-surface)',
+          borderRadius: 12,
+          border: '1px solid var(--color-border)',
+        }}
+      >
+        <label
+          htmlFor="prediction-note-input"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 6,
+            fontSize: 13,
+            fontWeight: 700,
+            color: 'var(--color-text)',
+            marginBottom: 6,
+          }}
+        >
+          <Tag size={14} color="var(--color-accent)" />
+          Ghi chú / Nhãn ảnh (Tùy chọn):
+        </label>
+        <input
+          id="prediction-note-input"
+          type="text"
+          value={note}
+          onChange={(e) => onNoteChange?.(e.target.value)}
+          placeholder="Ví dụ: Chó Phú Quốc, Chó Corgi của tôi, Mèo Anh lông ngắn..."
+          style={{
+            width: '100%',
+            padding: '10px 12px',
+            borderRadius: 8,
+            border: '1px solid var(--color-border)',
+            background: 'var(--color-bg)',
+            color: 'var(--color-text)',
+            fontSize: 13,
+            outline: 'none',
+          }}
+        />
+        <div style={{ fontSize: 11, color: 'var(--color-text-faint)', marginTop: 5 }}>
+          Điền tên giống thực tế hoặc đặc điểm để dễ dàng đối chiếu kết quả nhận diện trong Lịch sử.
         </div>
       </div>
 

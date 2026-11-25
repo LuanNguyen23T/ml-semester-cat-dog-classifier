@@ -23,6 +23,7 @@ export function HomePage() {
 
   const [selectedMethod, setSelectedMethod] = useState<ModelMethod>(DEFAULT_MODEL_METHOD);
   const [useTta, setUseTta] = useState<boolean>(false);
+  const [note, setNote] = useState<string>('');
   const [selectedResultIndex, setSelectedResultIndex] = useState(0);
 
   const { predictions, activeIds, error: pollError, startPolling, reset } = usePredictionSession();
@@ -47,19 +48,21 @@ export function HomePage() {
     setUploadError(null);
     setSelectedResultIndex(0);
 
+    const notePayload = note.trim() || undefined;
+
     try {
       if (selectedMethod === 'all') {
-        const createdBatch = await predictionApi.createPredictionBatch(selectedFile, useTta);
+        const createdBatch = await predictionApi.createPredictionBatch(selectedFile, useTta, notePayload);
         startPolling(createdBatch.map((p) => p.id));
       } else {
-        const created = await predictionApi.createPrediction(selectedFile, selectedMethod, useTta);
+        const created = await predictionApi.createPrediction(selectedFile, selectedMethod, useTta, notePayload);
         startPolling([created.id]);
       }
     } catch (err: unknown) {
       setUploadError(formatApiError(err, 'Tải ảnh lên thất bại. Vui lòng thử lại.'));
       setStep('CONFIG');
     }
-  }, [selectedFile, selectedMethod, useTta, startPolling]);
+  }, [selectedFile, selectedMethod, useTta, note, startPolling]);
 
   const handleReset = useCallback(() => {
     reset();
@@ -67,6 +70,7 @@ export function HomePage() {
     setSelectedFile(null);
     setUploadError(null);
     setSelectedResultIndex(0);
+    setNote('');
     if (previewUrl) {
       URL.revokeObjectURL(previewUrl);
       setPreviewUrl(null);
@@ -297,6 +301,8 @@ export function HomePage() {
                   useTta={useTta}
                   onToggleTta={setUseTta}
                   onClassify={handleClassify}
+                  note={note}
+                  onNoteChange={setNote}
                 />
               )}
 

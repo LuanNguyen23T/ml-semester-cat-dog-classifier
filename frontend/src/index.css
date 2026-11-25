@@ -211,8 +211,8 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 999px;
   font-size: 12px;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  text-transform: none;
+  letter-spacing: 0.02em;
 }
 
 .badge-uploaded {
@@ -229,8 +229,12 @@ h1, h2, h3, h4, h5, h6 {
 
 .badge-completed {
   background: rgba(16,185,129,0.15);
-  color: #34d399;
+  color: #059669;
   border: 1px solid rgba(16,185,129,0.3);
+}
+
+[data-theme='dark'] .badge-completed {
+  color: #34d399;
 }
 
 .badge-failed {
@@ -328,19 +332,26 @@ h1, h2, h3, h4, h5, h6 {
    ============================ */
 ::-webkit-scrollbar {
   width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-surface);
+  background: transparent;
+  margin: 8px 0;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(139,92,246,0.4);
-  border-radius: 3px;
+  background: rgba(139, 92, 246, 0.4);
+  border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(139,92,246,0.6);
+  background: rgba(139, 92, 246, 0.65);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(139, 92, 246, 0.4) transparent;
 }
 
 /* ============================
@@ -391,4 +402,18 @@ h1, h2, h3, h4, h5, h6 {
     justify-content: center;
     padding: 0 !important;
   }
+}
+
+/* ============================
+   RECHARTS OUTLINE RESET
+   ============================ */
+.recharts-responsive-container,
+.recharts-wrapper,
+.recharts-surface,
+.recharts-wrapper *,
+.recharts-surface *,
+.recharts-legend-wrapper,
+svg:focus {
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent;
 }

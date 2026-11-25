@@ -1,5 +1,5 @@
-import { useState, useRef, useCallback } from 'react';
-import { Upload } from 'lucide-react';
+import { useState, useRef, useCallback, useEffect } from 'react';
+import { Upload, Clipboard } from 'lucide-react';
 
 interface ImageUploaderProps {
   onFileSelected: (file: File) => void;
@@ -54,18 +54,87 @@ export function ImageUploader({ onFileSelected }: ImageUploaderProps) {
     [validateAndSet],
   );
 
+  const handleClipboardEvent = useCallback(
+    (clipboardData: DataTransfer | null) => {
+      if (!clipboardData) return false;
+
+      // 1. Check for files in clipboardData.files
+      if (clipboardData.files && clipboardData.files.length > 0) {
+        const file = clipboardData.files[0];
+        if (file.type.startsWith('image/')) {
+          validateAndSet(file);
+          return true;
+        }
+      }
+
+      // 2. Check items in clipboardData.items (for screenshots, snipping tool, copy image)
+      if (clipboardData.items) {
+        const items = Array.from(clipboardData.items);
+        const imageItem = items.find((item) => item.type.startsWith('image/'));
+        if (imageItem) {
+          const blob = imageItem.getAsFile();
+          if (blob) {
+            const ext = blob.type.includes('png') ? 'png' : blob.type.includes('webp') ? 'webp' : 'jpg';
+            const fileName =
+              blob.name && blob.name !== 'image.png'
+                ? blob.name
+                : `pasted_image_${Date.now()}.${ext}`;
+            const file = new File([blob], fileName, { type: blob.type || 'image/png' });
+            validateAndSet(file);
+            return true;
+          }
+        }
+      }
+
+      return false;
+    },
+    [validateAndSet],
+  );
+
+  useEffect(() => {
+    const handlePaste = (e: ClipboardEvent) => {
+      const activeEl = document.activeElement;
+      // Don't intercept paste if user is typing in a text input or textarea
+      if (
+        activeEl &&
+        (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA' || activeEl.getAttribute('contenteditable') === 'true')
+      ) {
+        return;
+      }
+
+      const handled = handleClipboardEvent(e.clipboardData);
+      if (handled) {
+        e.preventDefault();
+      }
+    };
+
+    window.addEventListener('paste', handlePaste);
+    return () => window.removeEventListener('paste', handlePaste);
+  }, [handleClipboardEvent]);
+
   return (
     <div style={{ width: '100%' }}>
       <div
         className={`upload-zone ${isDragOver ? 'drag-over' : ''}`}
+        tabIndex={0}
         onDragOver={(e) => {
           e.preventDefault();
           setIsDragOver(true);
         }}
         onDragLeave={() => setIsDragOver(false)}
         onDrop={handleDrop}
+        onPaste={(e) => {
+          const handled = handleClipboardEvent(e.clipboardData);
+          if (handled) e.preventDefault();
+        }}
         onClick={() => inputRef.current?.click()}
-        style={{ cursor: 'pointer', padding: '56px 20px' }}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            inputRef.current?.click();
+          }
+        }}
+        style={{ cursor: 'pointer', padding: '56px 20px', outline: 'none' }}
       >
         <input
           ref={inputRef}
@@ -101,13 +170,13 @@ export function ImageUploader({ onFileSelected }: ImageUploaderProps) {
               marginBottom: 8,
             }}
           >
-            {isDragOver ? 'Thả ảnh vào đây!' : 'Kéo & thả ảnh vào đây'}
+            {isDragOver ? 'Thả ảnh vào đây!' : 'Kéo & thả hoặc Dán (Ctrl+V / ⌘V) ảnh vào đây'}
           </h3>
 
           <p style={{ color: 'var(--color-text-muted)', fontSize: 14, marginBottom: 20 }}>
             hoặc{' '}
             <span style={{ color: 'var(--color-accent)', fontWeight: 600 }}>
-              chọn từ thư viện / chụp ảnh
+              chọn từ thư viện / chụp ảnh màn hình rồi dán
             </span>
           </p>
 
@@ -135,6 +204,22 @@ export function ImageUploader({ onFileSelected }: ImageUploaderProps) {
                 {fmt}
               </span>
             ))}
+            <span
+              style={{
+                padding: '4px 10px',
+                background: 'rgba(16, 185, 129, 0.1)',
+                border: '1px solid rgba(16, 185, 129, 0.25)',
+                borderRadius: 6,
+                fontSize: 12,
+                color: '#059669',
+                fontWeight: 600,
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 5,
+              }}
+            >
+              <Clipboard size={12} /> Hỗ trợ Paste Ctrl+V / ⌘V
+            </span>
             <span
               style={{
                 padding: '4px 10px',

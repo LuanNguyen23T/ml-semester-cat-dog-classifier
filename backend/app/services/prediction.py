@@ -39,6 +39,9 @@ def _save_completed_prediction(
     processing_time: float,
 ) -> None:
     top_k_dicts = [item.model_dump() for item in result.top_k_results]
+    if result.unknown_assessment:
+        top_k_dicts.append({"_unknown_assessment": result.unknown_assessment})
+
     prediction_repo.update_prediction_status(
         db,
         db_obj,

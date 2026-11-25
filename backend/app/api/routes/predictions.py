@@ -2,7 +2,7 @@ import io
 from typing import List, Optional
 from uuid import UUID, uuid4
 
-from fastapi import APIRouter, BackgroundTasks, Depends, File, HTTPException, UploadFile
+from fastapi import APIRouter, BackgroundTasks, Depends, File, Form, HTTPException, UploadFile
 from PIL import Image as PILImage
 from PIL import ImageOps, UnidentifiedImageError
 from sqlalchemy import func
@@ -80,6 +80,7 @@ async def create_prediction(
     file: UploadFile = File(...),
     method: ModelMethod = ModelMethod.DUAL_STREAM_EFFICIENTNET,
     tta: bool = False,
+    note: Optional[str] = Form(None),
     db: Session = Depends(get_db),
 ):
     """Upload an image and start background classification."""
@@ -92,7 +93,9 @@ async def create_prediction(
     file_content = await _read_and_validate_image(file)
     image_url = upload_image_to_cloudinary(file_content, file.filename or "upload.jpg")
 
-    prediction = prediction_repo.create_prediction(db, image_key=image_url, method=method.value)
+    prediction = prediction_repo.create_prediction(
+        db, image_key=image_url, method=method.value, note=note
+    )
     background_tasks.add_task(background_task_runner, prediction.id, method, tta)
     return prediction
 
@@ -102,6 +105,7 @@ async def create_prediction_batch(
     background_tasks: BackgroundTasks,
     file: UploadFile = File(...),
     tta: bool = False,
+    note: Optional[str] = Form(None),
     db: Session = Depends(get_db),
 ):
     """Upload an image and start background classification for all 5 models (shared segmentation)."""
@@ -117,6 +121,7 @@ async def create_prediction_batch(
             image_key=image_url,
             method=method.value,
             batch_id=batch_id,
+            note=note,
         )
         predictions.append(prediction)
         batch_items.append((prediction.id, method))
@@ -144,6 +149,19 @@ def get_prediction(prediction_id: UUID, db: Session = Depends(get_db)):
     if not prediction:
         raise HTTPException(status_code=404, detail="Prediction not found")
     return prediction
+
+
+@router.delete("/predictions/{prediction_id}")
+def delete_prediction(
+    prediction_id: UUID,
+    delete_batch: bool = True,
+    db: Session = Depends(get_db),
+):
+    """Delete a prediction or its entire batch."""
+    deleted = prediction_repo.delete_prediction(db, prediction_id, delete_batch=delete_batch)
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Prediction not found")
+    return {"message": "Deleted successfully", "count": deleted}
 
 
 @router.get("/predictions", response_model=List[PredictionResponse])
@@ -220,6 +238,7 @@ def get_prediction_history(
             "group_id": str(row.group_id),
             "batch_id": None,
             "image_key": "",
+            "note": None,
             "created_at": row.created_at,
             "predictions": [],
         }
@@ -229,6 +248,8 @@ def get_prediction_history(
         group = grouped[str(prediction.batch_id or prediction.id)]
         group["batch_id"] = prediction.batch_id
         group["image_key"] = prediction.image_key
+        if getattr(prediction, "note", None) and not group["note"]:
+            group["note"] = prediction.note
         group["predictions"].append(prediction)
 
     groups = list(grouped.values())

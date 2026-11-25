@@ -78,9 +78,11 @@ export const predictionApi = {
     file: File,
     method: SingleModelMethod = DEFAULT_MODEL_METHOD,
     tta = false,
+    note?: string,
   ): Promise<PredictionCreateResponse> => {
     const formData = new FormData();
     formData.append('file', file);
+    if (note) formData.append('note', note);
     const { data } = await api.post<PredictionCreateResponse>('/predictions', formData, {
       params: { method, tta },
       headers: { 'Content-Type': 'multipart/form-data' },
@@ -91,9 +93,14 @@ export const predictionApi = {
   /**
    * Upload an image and create multiple prediction records (one for each model).
    */
-  createPredictionBatch: async (file: File, tta = false): Promise<PredictionCreateResponse[]> => {
+  createPredictionBatch: async (
+    file: File,
+    tta = false,
+    note?: string,
+  ): Promise<PredictionCreateResponse[]> => {
     const formData = new FormData();
     formData.append('file', file);
+    if (note) formData.append('note', note);
     const { data } = await api.post<PredictionCreateResponse[]>('/predictions/batch', formData, {
       params: { tta },
       headers: { 'Content-Type': 'multipart/form-data' },
@@ -106,6 +113,16 @@ export const predictionApi = {
    */
   getPrediction: async (id: string): Promise<PredictionResponse> => {
     const { data } = await api.get<PredictionResponse>(`/predictions/${id}`);
+    return data;
+  },
+
+  /**
+   * Delete a prediction or its entire batch.
+   */
+  deletePrediction: async (id: string, deleteBatch = true): Promise<{ message: string; count: number }> => {
+    const { data } = await api.delete<{ message: string; count: number }>(`/predictions/${id}`, {
+      params: { delete_batch: deleteBatch },
+    });
     return data;
   },
 

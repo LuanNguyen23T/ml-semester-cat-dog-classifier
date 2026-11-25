@@ -101,8 +101,9 @@ def build_classifier_result(
     probs: torch.Tensor,
     model_version: str,
     top_k: int = 5,
+    unknown_assessment: Optional[Any] = None,
 ) -> ClassifierResult:
-    """Convert a 1D probability tensor [37] into a Top-K ClassifierResult."""
+    """Convert a 1D probability tensor [37] into a Top-K ClassifierResult with unknown breed support."""
     k = min(top_k, len(BREED_CATALOGUE))
     top_probs, top_idx = torch.topk(probs, k=k)
 
@@ -119,11 +120,20 @@ def build_classifier_result(
         )
 
     best = top_k_items[0]
+    is_unknown = unknown_assessment.is_unknown if unknown_assessment else False
+    unknown_score = round(unknown_assessment.unknown_score, 6) if unknown_assessment else 0.0
+    breed_status = unknown_assessment.breed_status if unknown_assessment else "known"
+    assessment_dict = unknown_assessment.to_dict() if unknown_assessment else None
+
     return ClassifierResult(
         predicted_breed_id=best.breed_id,
         score=round(best.score, 6),
         top_k_results=top_k_items,
         model_version=model_version,
+        is_unknown_breed=is_unknown,
+        unknown_score=unknown_score,
+        breed_status=breed_status,
+        unknown_assessment=assessment_dict,
     )
 
 

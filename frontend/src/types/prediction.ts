@@ -156,6 +156,7 @@ export interface PredictionCreateResponse {
   batch_id: string | null;
   status: PredictionStatus;
   method: ModelMethod | null;
+  note?: string | null;
 }
 
 export interface PredictionResponse {
@@ -169,14 +170,27 @@ export interface PredictionResponse {
   method: SingleModelMethod | string | null;
   processing_time?: number;
   status: PredictionStatus;
+  note?: string | null;
   error_message: string | null;
   created_at: string;
+  is_unknown_breed?: boolean;
+  unknown_score?: number;
+  breed_status?: string;
+  unknown_assessment?: {
+    is_unknown: boolean;
+    breed_status: string;
+    status_label_vi: string;
+    unknown_score: number;
+    known_confidence: number;
+    summary: string;
+  } | null;
 }
 
 export interface PredictionHistoryGroup {
   group_id: string;
   batch_id: string | null;
   image_key: string;
+  note?: string | null;
   created_at: string;
   predictions: PredictionResponse[];
 }
