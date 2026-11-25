@@ -55,6 +55,13 @@ backend/weights/
 *.pt
 *.ckpt
 
+# Databases
+*.db
+*.sqlite
+*.sqlite3
+backend/*.db
+
+
 # Training runs & logs
 runs/
 logs/
